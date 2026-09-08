@@ -255,6 +255,10 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                 { label: "Products", action: () => handleNavClick("products") },
                 { label: "Work", action: () => handleNavClick("work") },
                 { label: "Contact", action: () => handleNavClick("contact") },
+                {
+                  label: "DevOps CV ↗",
+                  action: () => window.open("/NguyenBinhMinh-DevOpsEngineer-2026.pdf", "_blank"),
+                },
               ].map((item) => (
                 <motion.div
                   key={item.label}

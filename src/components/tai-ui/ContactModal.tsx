@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Copy, Check, ExternalLink, Mail } from "lucide-react";
+import { Copy, Check, ExternalLink, Mail, Download, FileText } from "lucide-react";
 import { ButtonTextRoll } from "./ButtonTextRoll";
 import { WipeButton } from "./WipeButton";
+import { profile } from "@/data/portfolio";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -17,8 +18,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const prefersReduced = useReducedMotion();
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
 
-  const primaryEmail = "contact@binhminh.thinkai.id.vn";
-  const directEmail = "pata10102004@gmail.com";
+  const primaryEmail = profile.email; // pata10102004@gmail.com
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -208,22 +208,51 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </WipeButton>
             </div>
 
+            {/* DevOps CV Download Box */}
+            <div className="p-4 rounded-none bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                  <FileText className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>DevOps Curriculum Vitae</span>
+                </div>
+                <p className="text-[11px] font-mono text-neutral-400">
+                  Nguyen Binh Minh · 2026 Updated · B.S. Software Engineering (PDF)
+                </p>
+              </div>
+
+              <WipeButton
+                as="a"
+                href="/NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                target="_blank"
+                rel="noreferrer"
+                download="NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                wipeColor="#ffffff"
+                textColor="#ffffff"
+                hoverTextColor="#05070a"
+                borderColor="rgba(255, 255, 255, 0.25)"
+                hoverBorderColor="#ffffff"
+                className="px-3.5 py-2 rounded-none bg-white/10 flex items-center justify-center gap-2 text-xs font-mono font-bold cursor-pointer shrink-0 select-none"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download CV</span>
+              </WipeButton>
+            </div>
+
             {/* Social & Alternative Contact Info */}
             <div className="border-t border-white/10 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono text-neutral-400">
-              <div>
-                Direct:{" "}
-                <button
-                  type="button"
-                  onClick={() => handleCopy(directEmail)}
-                  className="text-neutral-200 hover:text-white underline underline-offset-2 cursor-pointer font-bold"
+              <div className="flex items-center gap-2">
+                <span>Phone / Zalo:</span>
+                <a
+                  href={`tel:${profile.phone.replace(/\s+/g, "")}`}
+                  className="text-neutral-200 hover:text-white font-bold transition-colors"
                 >
-                  {directEmail}
-                </button>
+                  {profile.phone}
+                </a>
               </div>
 
               <div className="flex items-center gap-3">
                 <a
-                  href="https://github.com/bnhminh1010"
+                  href={profile.github}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
@@ -232,7 +261,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 </a>
                 <span>·</span>
                 <a
-                  href="https://linkedin.com/in/bnhminh1010"
+                  href={profile.linkedin}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"

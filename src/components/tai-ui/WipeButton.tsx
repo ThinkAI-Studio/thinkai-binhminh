@@ -15,6 +15,7 @@ export interface WipeButtonProps
   href?: string;
   target?: string;
   rel?: string;
+  download?: string | boolean;
   wipeColor?: string;
   textColor?: string;
   hoverTextColor?: string;
@@ -33,6 +34,7 @@ export const WipeButton = React.forwardRef<HTMLButtonElement, WipeButtonProps>(
       href,
       target,
       rel,
+      download,
       wipeColor = "#ffffff",
       textColor = "#ffffff",
       hoverTextColor = "#05070a",
@@ -109,7 +111,7 @@ export const WipeButton = React.forwardRef<HTMLButtonElement, WipeButtonProps>(
     );
 
     const baseClasses = cn(
-      "relative inline-flex items-center justify-center overflow-hidden rounded-none font-mono text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-white/50 active:scale-[0.98] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]",
+      "relative inline-flex items-center justify-center overflow-hidden rounded-none transition-all duration-300 cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-white/50 active:scale-[0.98]",
       className
     );
 
@@ -139,6 +141,7 @@ export const WipeButton = React.forwardRef<HTMLButtonElement, WipeButtonProps>(
           href={href}
           target={target}
           rel={rel}
+          download={download}
           onClick={onClick as any}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

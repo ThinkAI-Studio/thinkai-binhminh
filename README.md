@@ -173,7 +173,7 @@ npm run registry:build
 ## 🛡️ Security & Engineering Controls
 
 - **Trust Boundary Policy:** The public site contains zero operational secrets, database connectors, or live infrastructure credentials. All architecture diagrams are strictly demonstrative.
-- **Vulnerability Disclosure:** Please review [`SECURITY.md`](./SECURITY.md) before submitting reports. Direct emails to `contact@binhminh.thinkai.id.vn`.
+- **Vulnerability Disclosure:** Please review [`SECURITY.md`](./SECURITY.md) before submitting reports. Direct emails to `pata10102004@gmail.com`.
 - **Runbooks & Operational Architecture:** Detailed in [`docs/architecture.md`](./docs/architecture.md) and [`docs/runbooks/`](./docs/runbooks/).
 
 ---

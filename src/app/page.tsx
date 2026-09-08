@@ -792,13 +792,13 @@ export default function PortfolioPage() {
               </div>
 
               {/* Col 2: Vertical Navigation Links with Balanced Scale & Forward Wipe */}
-              <div className="md:col-span-4 flex flex-col gap-1.5 font-bold tracking-tight text-4xl sm:text-5xl lg:text-6xl leading-[1.0]">
+              <div className="md:col-span-4 flex flex-col gap-1.5 font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl leading-[1.0]">
                 <WipeButton
                   onClick={() => setIsAboutOpen(true)}
                   wipeColor="#ffffff"
                   textColor="#ffffff"
                   hoverTextColor="#05070a"
-                  className="text-left px-3 py-1 -ml-3 rounded-none cursor-pointer w-fit"
+                  className="text-left px-3 py-1 -ml-3 rounded-none cursor-pointer w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
                   About
                 </WipeButton>
@@ -808,7 +808,7 @@ export default function PortfolioPage() {
                   wipeColor="#ffffff"
                   textColor="#ffffff"
                   hoverTextColor="#05070a"
-                  className="px-3 py-1 -ml-3 rounded-none w-fit"
+                  className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
                   Products
                 </WipeButton>
@@ -818,7 +818,7 @@ export default function PortfolioPage() {
                   wipeColor="#ffffff"
                   textColor="#ffffff"
                   hoverTextColor="#05070a"
-                  className="px-3 py-1 -ml-3 rounded-none w-fit"
+                  className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
                   Work
                 </WipeButton>
@@ -828,7 +828,7 @@ export default function PortfolioPage() {
                   wipeColor="#ffffff"
                   textColor="#ffffff"
                   hoverTextColor="#05070a"
-                  className="px-3 py-1 -ml-3 rounded-none w-fit"
+                  className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
                   Contact
                 </WipeButton>

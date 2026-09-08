@@ -3,10 +3,11 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { ButtonTextRoll } from "./ButtonTextRoll";
 import { WipeButton } from "./WipeButton";
 import { TAI_SPRING, TAI_EASE } from "@/lib/motion";
+import { profile } from "@/data/portfolio";
 
 interface AboutDrawerProps {
   isOpen: boolean;
@@ -128,6 +129,25 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                       <span className="w-2 h-2 rounded-none bg-emerald-600 animate-pulse" />
                       <span>HCMC, Vietnam · Available for Engineering & Projects</span>
                     </div>
+                    <div className="pt-2">
+                      <WipeButton
+                        as="a"
+                        href="/NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                        download="NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                        wipeColor="#0a0a0c"
+                        textColor="#0a0a0c"
+                        hoverTextColor="#ffffff"
+                        borderColor="rgba(0, 0, 0, 0.2)"
+                        hoverBorderColor="#0a0a0c"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-black/[0.05] border border-black/15 text-xs font-mono font-bold cursor-pointer text-[#0a0a0c] shadow-sm select-none"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>{lang === "vi" ? "Tải CV DevOps (PDF)" : "Download DevOps CV"}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </WipeButton>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -222,16 +242,32 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                 className="border-t-2 border-black/[0.08] pt-8 mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono font-bold"
               >
                 <a
-                  href="mailto:contact@binhminh.thinkai.id.vn"
+                  href={`mailto:${profile.email}`}
                   className="text-[#0a0a0c] font-extrabold hover:underline underline-offset-4"
                   style={{ color: "#0a0a0c" }}
                 >
-                  ↳ contact@binhminh.thinkai.id.vn
+                  ↳ {profile.email}
                 </a>
-                <div className="flex items-center gap-3 text-[#0a0a0c] font-bold">
+                <div className="flex flex-wrap items-center gap-2 text-[#0a0a0c] font-bold">
                   <WipeButton
                     as="a"
-                    href="https://github.com/bnhminh1010"
+                    href="/NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    download="NguyenBinhMinh-DevOpsEngineer-2026.pdf"
+                    wipeColor="#0a0a0c"
+                    textColor="#0a0a0c"
+                    hoverTextColor="#ffffff"
+                    borderColor="rgba(0, 0, 0, 0.15)"
+                    hoverBorderColor="#0a0a0c"
+                    className="px-3 py-1.5 rounded-none bg-black/[0.05] flex items-center gap-1 text-xs font-mono font-bold cursor-pointer select-none border border-black/15 shadow-sm"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>CV (PDF)</span>
+                  </WipeButton>
+                  <WipeButton
+                    as="a"
+                    href={profile.github}
                     target="_blank"
                     rel="noreferrer"
                     wipeColor="#0a0a0c"
@@ -246,7 +282,7 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                   </WipeButton>
                   <WipeButton
                     as="a"
-                    href="https://linkedin.com/in/bnhminh1010"
+                    href={profile.linkedin}
                     target="_blank"
                     rel="noreferrer"
                     wipeColor="#0a0a0c"
