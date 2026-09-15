@@ -204,7 +204,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             aria-label={t.nav.switchLangAria}
             onClick={toggleLanguage}
             title={t.nav.switchLangAria}
-            className="group relative h-8 sm:h-8.5 inline-flex items-center p-[3px] rounded-none bg-[#09090b]/90 backdrop-blur-md border border-white/15 hover:border-white/30 transition-colors cursor-pointer select-none shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_4px_16px_rgba(0,0,0,0.6)] active:scale-[0.97]"
+            className="group relative h-8 sm:h-8.5 hidden sm:inline-flex items-center p-[3px] rounded-none bg-[#09090b]/90 backdrop-blur-md border border-white/15 hover:border-white/30 transition-colors cursor-pointer select-none shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_4px_16px_rgba(0,0,0,0.6)] active:scale-[0.97]"
           >
             <button
               type="button"
@@ -302,30 +302,12 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             initial={{ y: "-100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 0.45, ease: LUXURY_EASE }}
+            transition={{ duration: 0.35, ease: LUXURY_EASE }}
+            data-testid="mobile-nav-drawer"
             className="fixed top-0 inset-x-0 z-40 bg-[#09090b]/98 backdrop-blur-3xl pt-24 pb-4 px-6 border-b border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.95)] sm:hidden flex flex-col justify-between"
           >
-            {/* Big Bold Vertical Links */}
-            <motion.div
-              initial="closed"
-              animate="open"
-              exit="closed"
-              variants={{
-                open: {
-                  transition: {
-                    staggerChildren: 0.06,
-                    delayChildren: 0.1,
-                  },
-                },
-                closed: {
-                  transition: {
-                    staggerChildren: 0.03,
-                    staggerDirection: -1,
-                  },
-                },
-              }}
-              className="flex flex-col gap-4 text-4xl font-bold tracking-tight text-white pt-2"
-            >
+            {/* Big Bold Vertical Links - Stable direct rendering without stuck variant trap */}
+            <div className="flex flex-col gap-4 text-4xl font-bold tracking-tight text-white pt-2">
               {[
                 { label: t.nav.about, action: () => onOpenAbout() },
                 { label: t.nav.work, action: () => handleNavClick("products") },
@@ -336,33 +318,20 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                   action: () => window.open("/NguyenBinhMinh-DevOpsEngineer-2026.pdf", "_blank"),
                 },
               ].map((item) => (
-                <motion.div
-                  key={item.label}
-                  variants={{
-                    open: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.4, ease: LUXURY_EASE },
-                    },
-                    closed: {
-                      opacity: 0,
-                      y: 16,
-                      transition: { duration: 0.2, ease: LUXURY_EASE },
-                    },
-                  }}
-                >
+                <div key={item.label}>
                   <button
+                    type="button"
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       item.action();
                     }}
-                    className="text-left text-white hover:text-neutral-300 active:scale-[0.98] transition-all cursor-pointer font-bold"
+                    className="text-left text-white hover:text-neutral-300 active:scale-[0.98] transition-all cursor-pointer font-bold select-none"
                   >
                     {item.label}
                   </button>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
 
             {/* Mobile Language Switcher Row */}
             <div className="flex items-center justify-between py-3.5 border-y border-white/[0.08] my-3 text-xs font-mono">
@@ -417,13 +386,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             </div>
 
             {/* Bottom Featured Live Product Callout Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.4, delay: 0.28, ease: LUXURY_EASE }}
-              className="mt-2 mb-4"
-            >
+            <div className="mt-2 mb-4">
               <a
                 href="https://hostdeck.thinkai.id.vn"
                 target="_blank"
@@ -451,7 +414,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-white shrink-0 transition-colors" />
               </a>
-            </motion.div>
+            </div>
 
             {/* Bottom Grab Bar Handle */}
             <div className="flex justify-center items-center py-2">

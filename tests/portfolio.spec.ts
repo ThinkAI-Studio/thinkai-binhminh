@@ -36,17 +36,27 @@ test("home publishes an absolute social thumbnail", async ({ page, request }) =>
   expect(response.headers()["content-type"]).toContain("image/png");
 });
 
-test("language switcher toggles between English and Vietnamese mode", async ({ page }) => {
+test("language switcher toggles between English and Vietnamese mode", async ({ page, isMobile }) => {
   await page.goto("/");
   await expect(page.locator("body")).toBeVisible();
 
   // Initial state is English
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 
-  // Switch to Vietnamese mode
-  const toggleBtn = page.locator('[data-testid="language-toggle-button"]');
-  await expect(toggleBtn).toBeVisible();
-  await toggleBtn.click();
+  if (isMobile) {
+    // On mobile, language switcher is hidden from the outer header and inside the navigation menu drawer
+    await expect(page.locator('[data-testid="language-toggle-button"]')).not.toBeVisible();
+    const menuBtn = page.getByRole("button", { name: "Toggle navigation menu" });
+    await menuBtn.click();
+    const viBtn = page.locator('[data-lang-mobile="vi"]');
+    await expect(viBtn).toBeVisible();
+    await viBtn.click();
+  } else {
+    // Switch to Vietnamese mode on desktop
+    const toggleBtn = page.locator('[data-testid="language-toggle-button"]');
+    await expect(toggleBtn).toBeVisible();
+    await toggleBtn.click();
+  }
 
   // Expect html lang to be updated to vi
   await expect(page.locator("html")).toHaveAttribute("lang", "vi");
@@ -58,11 +68,48 @@ test("language switcher toggles between English and Vietnamese mode", async ({ p
   const savedLang = await page.evaluate(() => localStorage.getItem("portfolio-language"));
   expect(savedLang).toBe("vi");
 
-  // Toggle back to English
-  await toggleBtn.click();
+  if (isMobile) {
+    // Toggle back to English on mobile
+    const enBtn = page.locator('[data-lang-mobile="en"]');
+    await expect(enBtn).toBeVisible();
+    await enBtn.click();
+  } else {
+    // Toggle back to English on desktop
+    const toggleBtn = page.locator('[data-testid="language-toggle-button"]');
+    await toggleBtn.click();
+  }
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   const enSaved = await page.evaluate(() => localStorage.getItem("portfolio-language"));
   expect(enSaved).toBe("en");
+});
+
+test("mobile menu can be opened and closed repeatedly without losing buttons", async ({ page, isMobile }) => {
+  if (!isMobile) return;
+  await page.goto("/");
+  await expect(page.locator("body")).toBeVisible();
+
+  const menuToggle = page.getByRole("button", { name: "Toggle navigation menu" });
+  const drawer = page.locator('[data-testid="mobile-nav-drawer"]');
+
+  // Rapidly toggle menu open and close multiple times
+  for (let i = 0; i < 4; i++) {
+    await menuToggle.click();
+    await expect(drawer).toBeVisible();
+    await expect(drawer.getByRole("button", { name: /about|giới thiệu/i })).toBeVisible();
+    await expect(drawer.locator('[data-lang-mobile="en"]')).toBeVisible();
+    await expect(drawer.locator('[data-lang-mobile="vi"]')).toBeVisible();
+
+    await menuToggle.click();
+    await expect(drawer).not.toBeVisible();
+  }
+
+  // Final open and verify all action buttons are present and intact
+  await menuToggle.click();
+  await expect(drawer).toBeVisible();
+  await expect(drawer.getByRole("button", { name: /about|giới thiệu/i })).toBeVisible();
+  await expect(drawer.getByRole("button", { name: /products|sản phẩm/i })).toBeVisible();
+  await expect(drawer.getByRole("button", { name: /experience|kinh nghiệm/i })).toBeVisible();
+  await expect(drawer.getByRole("button", { name: /contact|liên hệ/i })).toBeVisible();
 });
 
 test("defaults to Vietnamese when browser system language is vi-VN", async ({ browser }) => {
