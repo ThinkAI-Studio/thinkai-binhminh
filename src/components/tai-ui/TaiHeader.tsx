@@ -338,7 +338,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
               <div className="flex items-center gap-2 text-neutral-400 font-bold uppercase tracking-wider text-[11px]">
                 <span className="w-1.5 h-1.5 rounded-none bg-emerald-400 animate-pulse" />
                 <LanguageTransition langKey={language}>
-                  <span>{language === "vi" ? "NGÔN NGỮ GIAO DIỆN" : "INTERFACE LANGUAGE"}</span>
+                  <span>{language === "vi" ? "NGÔN NGỮ" : "LANGUAGE"}</span>
                 </LanguageTransition>
               </div>
               <div className="relative inline-flex items-center p-[3px] bg-[#09090b] border border-white/15 shadow-inner">
@@ -349,7 +349,8 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                     else setLanguage("en");
                   }}
                   data-lang-mobile="en"
-                  className={`relative z-10 px-3 py-1.5 text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
+                  aria-label="Switch to English"
+                  className={`relative z-10 w-9 h-7 flex items-center justify-center text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
                     language === "en" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
                   }`}
                 >
@@ -360,7 +361,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                       transition={sliderTransition}
                     />
                   )}
-                  <span className="relative z-10">ENGLISH</span>
+                  <span className="relative z-10">EN</span>
                 </button>
                 <button
                   type="button"
@@ -369,7 +370,8 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                     else setLanguage("vi");
                   }}
                   data-lang-mobile="vi"
-                  className={`relative z-10 px-3 py-1.5 text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
+                  aria-label="Switch to Vietnamese"
+                  className={`relative z-10 w-9 h-7 flex items-center justify-center text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
                     language === "vi" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
                   }`}
                 >
@@ -380,7 +382,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                       transition={sliderTransition}
                     />
                   )}
-                  <span className="relative z-10">TIẾNG VIỆT</span>
+                  <span className="relative z-10">VI</span>
                 </button>
               </div>
             </div>

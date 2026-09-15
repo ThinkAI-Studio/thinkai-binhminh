@@ -472,7 +472,7 @@ export default function PortfolioPage() {
                               href={project.liveUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-2 px-5 py-3 rounded-none bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg"
+                              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-none bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg w-full sm:w-auto"
                             >
                               <LanguageTransition langKey={language} as="span">
                                 {t.work.openSystem}
@@ -484,7 +484,7 @@ export default function PortfolioPage() {
                           <button
                             type="button"
                             onClick={() => setSelectedArchProject(project.id)}
-                            className="inline-flex items-center gap-2 px-5 py-3 rounded-none bg-[#16161b] hover:bg-[#222228] border border-white/25 hover:border-white/50 text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-none bg-[#16161b] hover:bg-[#222228] border border-white/25 hover:border-white/50 text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer w-full sm:w-auto"
                           >
                             <LanguageTransition langKey={language} as="span">
                               {t.work.architecture}

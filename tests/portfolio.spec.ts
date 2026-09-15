@@ -98,6 +98,8 @@ test("mobile menu can be opened and closed repeatedly without losing buttons", a
     await expect(drawer.getByRole("button", { name: /about|giới thiệu/i })).toBeVisible();
     await expect(drawer.locator('[data-lang-mobile="en"]')).toBeVisible();
     await expect(drawer.locator('[data-lang-mobile="vi"]')).toBeVisible();
+    await expect(drawer.locator('[data-lang-mobile="en"]')).toHaveText("EN");
+    await expect(drawer.locator('[data-lang-mobile="vi"]')).toHaveText("VI");
 
     await menuToggle.click();
     await expect(drawer).not.toBeVisible();
@@ -123,6 +125,28 @@ test("defaults to Vietnamese when browser system language is vi-VN", async ({ br
   await expect(page.locator("text=Bắt đầu dự án").first()).toBeVisible();
 
   await context.close();
+});
+
+test("architecture and case study modal is responsive and cleanly closable", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("body")).toBeVisible();
+
+  // Find the first architecture button in the Products section
+  const archButton = page.getByRole("button", { name: /architecture|kiến trúc/i }).first();
+  await expect(archButton).toBeVisible();
+  await archButton.click();
+
+  // Verify modal is displayed and close button is fully visible and not clipped
+  const closeButton = page.locator('[data-testid="arch-close-button"]');
+  await expect(closeButton).toBeVisible();
+
+  // Verify tabs inside modal
+  const caseStudyTab = page.getByRole("button", { name: /case study|báo cáo/i }).first();
+  await expect(caseStudyTab).toBeVisible();
+
+  // Click close button and confirm modal closes
+  await closeButton.click();
+  await expect(closeButton).not.toBeVisible();
 });
 
 
