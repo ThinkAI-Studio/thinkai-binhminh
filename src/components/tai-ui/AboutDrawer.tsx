@@ -7,7 +7,7 @@ import { ArrowUpRight, Download } from "lucide-react";
 import { ButtonTextRoll } from "./ButtonTextRoll";
 import { WipeButton } from "./WipeButton";
 import { TAI_SPRING, TAI_EASE } from "@/lib/motion";
-import { profile } from "@/data/portfolio";
+import { profile, copy } from "@/data/portfolio";
 
 interface AboutDrawerProps {
   isOpen: boolean;
@@ -17,6 +17,7 @@ interface AboutDrawerProps {
 
 export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
   const prefersReduced = useReducedMotion();
+  const t = copy[lang].aboutDrawer;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -90,7 +91,7 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                 <motion.div {...getRevealProps(0.18)} className="flex items-center justify-between pb-2">
                   <div className="flex items-center gap-2.5 text-sm font-extrabold text-[#0a0a0c]">
                     <span className="w-2.5 h-2.5 rounded-none bg-[#52525b]" />
-                    <span>About the engineer & studio</span>
+                    <span>{t.headerLabel}</span>
                   </div>
 
                   <button
@@ -99,7 +100,7 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                     style={{ backgroundColor: "#0a0a0c", color: "#ffffff" }}
                   >
                     <ButtonTextRoll
-                      text="Close"
+                      text={t.close}
                       className="font-mono text-xs font-bold leading-none"
                     />
                     <span className="text-[10px] text-neutral-400 font-mono">ESC</span>
@@ -120,14 +121,14 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                   </div>
                   <div className="space-y-1">
                     <div className="text-xl font-extrabold text-[#0a0a0c] tracking-tight">
-                      Nguyen Binh Minh
+                      {t.founderName}
                     </div>
                     <div className="text-xs font-mono text-neutral-700 font-bold">
-                      DevOps & Systems Engineer · Founder of ThinkAI Studio
+                      {t.founderRole}
                     </div>
                     <div className="text-[11px] font-mono text-neutral-600 flex items-center gap-1.5 pt-0.5 font-medium">
                       <span className="w-2 h-2 rounded-none bg-emerald-600 animate-pulse" />
-                      <span>HCMC, Vietnam · Available for Engineering & Projects</span>
+                      <span>{t.founderStatus}</span>
                     </div>
                     <div className="pt-2">
                       <WipeButton
@@ -144,7 +145,7 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-black/[0.05] border border-black/15 text-xs font-mono font-bold cursor-pointer text-[#0a0a0c] shadow-sm select-none"
                       >
                         <Download className="w-3.5 h-3.5" />
-                        <span>{lang === "vi" ? "Tải CV DevOps (PDF)" : "Download DevOps CV"}</span>
+                        <span>{t.downloadCv}</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </WipeButton>
                     </div>
@@ -153,33 +154,23 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
 
                 {/* Editorial Bio with Balanced Personal & Studio Philosophy */}
                 <div className="space-y-6 text-[#0a0a0c] text-lg sm:text-[19.5px] leading-[1.48] font-bold tracking-tight">
-                  <motion.p {...getRevealProps(0.3)}>
-                    {lang === "vi"
-                      ? "Xin chào, tôi là Bình Minh. Tôi xây dựng các hệ thống hạ tầng tin cậy, quy trình GitOps CI/CD và website hiệu năng cao dưới thương hiệu ThinkAI Studio, tập trung vào cấu hình dạng mã nguồn (IaC), tự động hóa, và quy trình bảo mật Zero-Trust."
-                      : "Hey, I'm Binh Minh. I engineer reliable infrastructure, GitOps CI/CD delivery pipelines, and high-performance web systems under ThinkAI Studio, focused on infrastructure as code, automated workflows, and Zero-Trust security primitives."}
-                  </motion.p>
-                  <motion.p {...getRevealProps(0.36)}>
-                    {lang === "vi"
-                      ? "Tôi tập trung vào giao điểm giữa kỹ thuật hệ thống, an toàn thông tin và trải nghiệm sản phẩm: từ máy chủ Bare-Metal (HostDeck), cụm K3s Kubernetes đến website mượt mà tối ưu chi phí."
-                      : "I focus on the intersection of systems engineering, automated security gating, and craft product experiences: from bare-metal servers (HostDeck) to enterprise K3s pipelines and high-speed web platforms."}
-                  </motion.p>
-                  <motion.p {...getRevealProps(0.42)}>
-                    {lang === "vi"
-                      ? "Tôi tin rằng sự kết hợp giữa tư duy hệ thống chặt chẽ và khả năng giám sát toàn diện (Observability) là chìa khóa để giữ cho mọi bản phát hành luôn ổn định, an toàn và dễ phục hồi."
-                      : "I believe the mix of disciplined systems thinking and deep observability is what makes software delivery predictable, resilient, and bulletproof."}
-                  </motion.p>
+                  {t.bioParagraphs.map((para, idx) => (
+                    <motion.p key={idx} {...getRevealProps(0.3 + idx * 0.06)}>
+                      {para}
+                    </motion.p>
+                  ))}
                 </div>
 
                 {/* Section 1: Flagship Products */}
                 <motion.div {...getRevealProps(0.48)} className="border-t-2 border-black/[0.08] pt-7 grid grid-cols-12 gap-6 items-baseline">
                   <div className="col-span-4 flex items-center gap-2.5 text-base font-extrabold text-[#0a0a0c]">
                     <span className="w-2 h-2 rounded-none bg-[#52525b]" />
-                    <span>Products</span>
+                    <span>{t.productsLabel}</span>
                   </div>
                   <div className="col-span-8 space-y-1.5 text-base font-bold text-[#0a0a0c] tracking-tight">
-                    <div>HostDeck Bare-Metal Console (hostdeck.thinkai.id.vn)</div>
-                    <div>ThinkAI Delivery Platform (learning.thinkai.id.vn)</div>
-                    <div>Hospital SAST Quality Gate Automation</div>
+                    {t.productsList.map((prod, idx) => (
+                      <div key={idx}>{prod}</div>
+                    ))}
                   </div>
                 </motion.div>
 
@@ -187,15 +178,12 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                 <motion.div {...getRevealProps(0.54)} className="border-t-2 border-black/[0.08] pt-7 grid grid-cols-12 gap-6 items-baseline">
                   <div className="col-span-4 flex items-center gap-2.5 text-base font-extrabold text-[#0a0a0c]">
                     <span className="w-2 h-2 rounded-none bg-[#52525b]" />
-                    <span>Stack</span>
+                    <span>{t.stackLabel}</span>
                   </div>
                   <div className="col-span-8 space-y-1.5 text-base font-bold text-[#0a0a0c] tracking-tight">
-                    <div>Go & Kubernetes (K3s)</div>
-                    <div>Rootless Podman & Docker</div>
-                    <div>Tailscale Zero-Trust Mesh</div>
-                    <div>GitHub Actions & Argo CD</div>
-                    <div>SonarQube & CodeQL SAST</div>
-                    <div>Next.js & Modern Frontend Systems</div>
+                    {t.stackList.map((stk, idx) => (
+                      <div key={idx}>{stk}</div>
+                    ))}
                   </div>
                 </motion.div>
 
@@ -203,19 +191,19 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                 <motion.div {...getRevealProps(0.6)} className="border-t-2 border-black/[0.08] pt-7 grid grid-cols-12 gap-6 items-baseline">
                   <div className="col-span-4 flex items-center gap-2.5 text-base font-extrabold text-[#0a0a0c]">
                     <span className="w-2 h-2 rounded-none bg-[#52525b]" />
-                    <span>Education</span>
+                    <span>{t.educationLabel}</span>
                   </div>
                   <div className="col-span-8 space-y-2 text-base font-bold text-[#0a0a0c] tracking-tight">
                     <div>
-                      <div>B.S. in Software Engineering</div>
+                      <div>{t.degree}</div>
                       <div className="text-xs font-mono text-neutral-600 font-medium">
-                        HUTECH University · 2022-2026 · GPA 3.24 / 4.0 · English B1
+                        {t.schoolMeta}
                       </div>
                     </div>
                     <div className="pt-1">
-                      <div className="text-sm font-extrabold text-black">IT Got Talent 2025 Semifinalist</div>
+                      <div className="text-sm font-extrabold text-black">{t.awardTitle}</div>
                       <div className="text-xs font-mono text-neutral-600 font-medium">
-                        Top Technical Talent Recognition · Academic Excellence Scholarship
+                        {t.awardMeta}
                       </div>
                     </div>
                   </div>
@@ -225,13 +213,12 @@ export function AboutDrawer({ isOpen, onClose, lang }: AboutDrawerProps) {
                 <motion.div {...getRevealProps(0.66)} className="border-t-2 border-black/[0.08] pt-7 grid grid-cols-12 gap-6 items-baseline">
                   <div className="col-span-4 flex items-center gap-2.5 text-base font-extrabold text-[#0a0a0c]">
                     <span className="w-2 h-2 rounded-none bg-[#52525b]" />
-                    <span>Principles</span>
+                    <span>{t.principlesLabel}</span>
                   </div>
                   <div className="col-span-8 space-y-1.5 text-base font-bold text-[#0a0a0c] tracking-tight">
-                    <div>Infrastructure as Code (Declarative Everything)</div>
-                    <div>Continuous Observability & Automated SLOs</div>
-                    <div>Zero-Trust Security by Default</div>
-                    <div>Repeatability over Manual Clicks</div>
+                    {t.principlesList.map((prin, idx) => (
+                      <div key={idx}>{prin}</div>
+                    ))}
                   </div>
                 </motion.div>
               </div>

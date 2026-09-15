@@ -456,7 +456,7 @@ export function ArchitectureModal({ projectId, onClose, lang }: ArchitectureModa
                             </span>
                             {item.verified && (
                               <span className="px-2 py-0.5 rounded-none bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px]">
-                                Verified
+                                {lang === "vi" ? "Đã xác thực" : "Verified"}
                               </span>
                             )}
                           </div>

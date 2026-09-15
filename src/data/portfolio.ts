@@ -90,45 +90,365 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/b%C3%ACnh-minh-4a953434b/",
 };
 
-export const copy: Localized<{
-  nav: { work: string; experience: string; skills: string; about: string; resume: string };
-  hero: { status: string; roleHeadline: string; statement: string; body: string; primary: string; secondary: string };
-  work: { title: string; body: string; source: string; live: string; preview: string; architecture: string; storyLabels: { problem: string; approach: string; outcome: string } };
-  experience: { title: string; body: string; role: string; period: string; story: { problem: string; approach: string; outcome: string } };
+export type PortfolioCopy = {
+  nav: {
+    work: string;
+    experience: string;
+    skills: string;
+    about: string;
+    resume: string;
+    contact: string;
+    menu: string;
+    close: string;
+    switchLangAria: string;
+  };
+  hero: {
+    eyebrow: string;
+    headline: string;
+    subline: string;
+    status: string;
+    roleHeadline: string;
+    statement: string;
+    body: string;
+    primary: string;
+    secondary: string;
+  };
+  carousel: {
+    slides: Array<{ tag: string; title: string; desc: string }>;
+    narrativeHeadline: string;
+    narrativeBody: string;
+    prevSlide: string;
+    nextSlide: string;
+  };
+  work: {
+    sectionLabel: string;
+    systemsLive: string;
+    copyCli: string;
+    copied: string;
+    openSystem: string;
+    architecture: string;
+    title: string;
+    body: string;
+    source: string;
+    live: string;
+    statusLive: string;
+    preview: string;
+    storyLabels: { problem: string; approach: string; outcome: string };
+  };
+  experience: {
+    sectionLabel: string;
+    eyebrow: string;
+    title: string;
+    role: string;
+    period: string;
+    columns: {
+      problemLabel: string;
+      problemDesc: string;
+      approachLabel: string;
+      approachDesc: string;
+      outcomeLabel: string;
+      outcomeDesc: string;
+    };
+    tags: string[];
+    body: string;
+    story: { problem: string; approach: string; outcome: string };
+  };
+  education: {
+    sectionLabel: string;
+    eyebrow: string;
+    degree: string;
+    school: string;
+    gpaText: string;
+    coursework: string;
+    tags: string[];
+    title: string;
+    recognitionEyebrow: string;
+    recognitions: Array<{ title: string; subtitle: string; tags: string[] }>;
+    recognition: { label: string; title: string; detail: string };
+  };
+  stack: {
+    cliLabel: string;
+    browseBlueprint: string;
+    modernTechStack: { line1: string; line2: string };
+    professionalAt: string;
+  };
+  cta: {
+    headline: string;
+    startProject: string;
+  };
+  contact: {
+    title: string;
+    body: string;
+    email: string;
+    cv: string;
+    close: string;
+    primaryLabel: string;
+    responseSla: string;
+    copyEmail: string;
+    copiedEmail: string;
+    openGmail: string;
+    defaultMail: string;
+    mailSubject: string;
+    mailBody: string;
+    cvTitle: string;
+    cvSubtitle: string;
+    downloadCv: string;
+    phoneLabel: string;
+  };
+  aboutDrawer: {
+    headerLabel: string;
+    close: string;
+    founderName: string;
+    founderRole: string;
+    founderStatus: string;
+    downloadCv: string;
+    bioParagraphs: string[];
+    productsLabel: string;
+    productsList: string[];
+    stackLabel: string;
+    stackList: string[];
+    educationLabel: string;
+    degree: string;
+    schoolMeta: string;
+    awardTitle: string;
+    awardMeta: string;
+    principlesLabel: string;
+    principlesList: string[];
+    cvPdf: string;
+  };
+  footer: {
+    navigation: string;
+    studioDetails: string;
+    location: {
+      based: string;
+      mode: string;
+    };
+    askAiTitle: string;
+    askAiPrompt: string;
+    askAiHint: string;
+    askAiAria: string;
+    connect: string;
+    backToTop: string;
+    availability: string;
+    copyright: string;
+  };
+  ocean: {
+    reloadAria: string;
+    quote: string;
+    holdPrompt: string;
+    stirring: string;
+    equilibrium: string;
+  };
   skills: { title: string; groups: Array<{ label: string; proof: string; items: string[] }> };
-  education: { title: string; school: string; degree: string; recognition: { label: string; title: string; detail: string } };
-  contact: { title: string; body: string; email: string; cv: string };
-  footer: string;
-}> = {
+};
+
+export const copy: Localized<PortfolioCopy> = {
   en: {
-    nav: { work: "Work", experience: "Experience", skills: "Skills", about: "About", resume: "DevOps CV" },
+    nav: {
+      work: "Products",
+      experience: "Experience",
+      skills: "Skills",
+      about: "About",
+      resume: "DevOps CV ↗",
+      contact: "Contact",
+      menu: "Menu",
+      close: "Close",
+      switchLangAria: "Switch language to Vietnamese",
+    },
     hero: {
+      eyebrow: "A SYSTEMS STUDIO",
+      headline: "RELIABLE\nDELIVERY",
+      subline: "INFRASTRUCTURE AS CODE · GITOPS PLATFORMS · CRAFT WEB SYSTEMS",
       status: "Available for DevOps opportunities",
       roleHeadline: "DevOps Engineer",
       statement: "I build delivery systems that are easier to ship, operate and recover.",
       body: "Software Engineering graduate focused on the delivery systems behind dependable services: CI/CD, containers, Linux infrastructure and practical security controls.",
-      primary: "View case studies",
+      primary: "Start a project",
       secondary: "Download DevOps CV",
     },
+    carousel: {
+      slides: [
+        {
+          tag: "01/03",
+          title: "CLI & REPEATABILITY",
+          desc: "Every application and infrastructure configuration is provisioned predictably through CLI and GitOps automation, with zero unreproducible manual clicks.",
+        },
+        {
+          tag: "02/03",
+          title: "GITOPS & ZERO-TRUST",
+          desc: "Continuous reconciliation with Argo CD, rootless Podman execution, and strict Zero-Trust Tailscale mesh networking for all interconnected host nodes.",
+        },
+        {
+          tag: "03/03",
+          title: "OBSERVABILITY & RECOVERY",
+          desc: "Real-time metrics, automated SLO tracking, instant alerting with n8n webhooks, and sub-second automated recovery baselines.",
+        },
+      ],
+      narrativeHeadline: "I build delivery systems that are easier to ship, operate and recover, spanning self-hosted homelabs, GitOps CI/CD pipelines, and high-performance web platforms. Every release is repeatable, observable, and fully under your control.",
+      narrativeBody: "Software Engineering graduate from HUTECH University (GPA 3.24/4.0), founder of ThinkAI Studio. Grounded in real-world DevOps practices: rootless Podman container orchestration, SAST security quality gates at Ung Buou Hospital, and zero-trust mesh networking.",
+      prevSlide: "Previous slide",
+      nextSlide: "Next slide",
+    },
     work: {
+      sectionLabel: "Products",
+      systemsLive: "03 Systems Live",
+      copyCli: "COPY CLI",
+      copied: "COPIED",
+      openSystem: "Open System",
+      architecture: "Architecture & Case Study",
       title: "The work behind the release.",
       body: "Two case studies grounded in CV outcomes and repository evidence: a private operations workbench and an education-platform delivery path.",
       source: "View source",
       live: "Visit live",
+      statusLive: "LIVE",
       preview: "OpenScreen preview",
-      architecture: "View architecture",
       storyLabels: { problem: "Challenge", approach: "Engineering decision", outcome: "Evidence delivered" },
     },
     experience: {
-      title: "Controls that make a release easier to trust.",
+      sectionLabel: "Experience",
+      eyebrow: "HOSPITAL SAST SECURITY GATES",
+      title: "Information Security & Operations Intern",
+      role: "Information Security & Operations Intern",
+      period: "Ho Chi Minh City Oncology Hospital · 05/2026 – 07/2026",
+      columns: {
+        problemLabel: "PROBLEM",
+        problemDesc: "Hospital Web & API systems faced CSRF risks, legacy packages, and lacked automated security gating.",
+        approachLabel: "APPROACH",
+        approachDesc: "Integrated SAST (SonarQube & CodeQL) into GitHub Actions; resolved vulnerabilities and standardized secure FTP baselines.",
+        outcomeLabel: "OUTCOME",
+        outcomeDesc: "100% of High/Medium SAST vulnerabilities remediated before release; established continuous automated security gates.",
+      },
+      tags: [".NET 8", "CodeQL SAST", "SonarQube Gates", "CSRF Remediation", "Package Fixes", "FTP Secure Baseline"],
       body: "A DevOps internship focused on safeguarding an internal .NET workflow and making its delivery path repeatable.",
-      role: "DevOps Engineer Intern, Ung Buou Hospital",
-      period: "05/2026 – 07/2026, Ho Chi Minh City",
       story: {
         problem: "An internal .NET procurement workflow needed stronger request boundaries and a repeatable release path before its approved hospital deployment.",
         approach: "I added GitHub Actions checks, CodeQL and SonarQube visibility, API-security review, CSRF remediation and package-vulnerability fixes; repository contracts clarify the access and request risks behind those controls.",
         outcome: "The release baseline put checks before handoff and supported deployment to the hospital server through the approved FTP workflow.",
       },
+    },
+    education: {
+      sectionLabel: "Education",
+      eyebrow: "EDUCATION",
+      degree: "Bachelor of Software Engineering",
+      school: "HUTECH University · 2022 - 2026",
+      gpaText: "GPA: 3.24 / 4.0 · English Proficiency: B1",
+      coursework: "Focused coursework on Cloud Computing, Distributed Systems, Network Security, Linux Administration, and Software Architecture.",
+      tags: ["GPA 3.24", "Software Engineering", "HUTECH 2022-2026", "English B1"],
+      title: "A software engineering foundation.",
+      recognitionEyebrow: "RECOGNITION",
+      recognitions: [
+        {
+          title: "IT Got Talent 2025",
+          subtitle: "Semifinalist Award · Top Technical Talent Recognition",
+          tags: ["IT Got Talent 2025", "Semifinalist", "Top Technical Talent", "DevOps Focus"],
+        },
+      ],
+      recognition: { label: "Recognition", title: "IT Got Talent 2025", detail: "Semifinalist" },
+    },
+    stack: {
+      cliLabel: "CLI",
+      browseBlueprint: "Browse Architecture Blueprint",
+      modernTechStack: { line1: "MODERN", line2: "TECH STACK" },
+      professionalAt: "PROFESSIONAL AT",
+    },
+    cta: {
+      headline: "RELIABLE\nSYSTEMS\nYOU OWN\n→ SHIP",
+      startProject: "Start a project",
+    },
+    contact: {
+      title: "Start a Project",
+      body: "Have a web platform, self-hosted infrastructure, or systems project in mind? Reach out directly via email or your preferred mail client:",
+      email: "Email Minh",
+      cv: "Download DevOps CV",
+      close: "Close",
+      primaryLabel: "(PRIMARY CONTACT)",
+      responseSla: "4-8h Response SLA",
+      copyEmail: "Copy Email",
+      copiedEmail: "Copied!",
+      openGmail: "Open in Gmail",
+      defaultMail: "Default Mail App",
+      mailSubject: "Project Inquiry · ThinkAI Studio",
+      mailBody: "Hi Binh Minh,\n\nI would like to discuss a project regarding...\n\n- Scope/Needs:\n- Timeline:\n- Budget range:\n\nBest regards,",
+      cvTitle: "DevOps Curriculum Vitae",
+      cvSubtitle: "Nguyen Binh Minh · 2026 Updated · B.S. Software Engineering (PDF)",
+      downloadCv: "Download CV",
+      phoneLabel: "Phone / Zalo:",
+    },
+    aboutDrawer: {
+      headerLabel: "About the engineer & studio",
+      close: "Close",
+      founderName: "Nguyen Binh Minh",
+      founderRole: "DevOps & Systems Engineer · Founder of ThinkAI Studio",
+      founderStatus: "HCMC, Vietnam · Available for Engineering & Projects",
+      downloadCv: "Download DevOps CV (PDF)",
+      bioParagraphs: [
+        "Hey, I'm Binh Minh. I engineer reliable infrastructure, GitOps CI/CD delivery pipelines, and high-performance web systems under ThinkAI Studio, focused on infrastructure as code, automated workflows, and Zero-Trust security primitives.",
+        "I focus on the intersection of systems engineering, automated security gating, and craft product experiences: from bare-metal servers (HostDeck) to enterprise K3s pipelines and high-speed web platforms.",
+        "I believe the mix of disciplined systems thinking and deep observability is what makes software delivery predictable, resilient, and bulletproof.",
+      ],
+      productsLabel: "Products",
+      productsList: [
+        "HostDeck Bare-Metal Console (hostdeck.thinkai.id.vn)",
+        "ThinkAI Delivery Platform (learning.thinkai.id.vn)",
+        "Hospital SAST Quality Gate Automation",
+      ],
+      stackLabel: "Stack",
+      stackList: [
+        "Go & Kubernetes (K3s)",
+        "Rootless Podman & Docker",
+        "Tailscale Zero-Trust Mesh",
+        "GitHub Actions & Argo CD",
+        "SonarQube & CodeQL SAST",
+        "Next.js & Modern Frontend Systems",
+      ],
+      educationLabel: "Education",
+      degree: "B.S. in Software Engineering",
+      schoolMeta: "HUTECH University · 2022-2026 · GPA 3.24 / 4.0 · English B1",
+      awardTitle: "IT Got Talent 2025 Semifinalist",
+      awardMeta: "Top Technical Talent Recognition · HUTECH University",
+      principlesLabel: "Principles",
+      principlesList: [
+        "Infrastructure as Code (Declarative Everything)",
+        "Continuous Observability & Automated SLOs",
+        "Zero-Trust Security by Default",
+        "Repeatability over Manual Clicks",
+      ],
+      cvPdf: "CV (PDF)",
+    },
+    footer: {
+      navigation: "Navigation",
+      studioDetails: "(STUDIO DETAILS)",
+      location: {
+        based: "Based in Vietnam.",
+        mode: "Remote-first. Working worldwide.",
+      },
+      askAiTitle: "(ASK AI ABOUT BINH MINH · THINKAI STUDIO)",
+      askAiPrompt: `Please analyze and summarize the background, engineering skills, and portfolio of Binh Minh (Nguyen Binh Minh), a DevOps & Systems Engineer based in Vietnam and the creator of ThinkAI Studio.
+
+Key information & resources:
+- Portfolio & Studio: https://binhminh.thinkai.id.vn
+- GitHub: https://github.com/bnhminh1010
+- Key Production Projects & Systems:
+  1. HostDeck Bare-Metal Console (https://hostdeck.thinkai.id.vn) - Homelab multi-node observability, rootless Podman container orchestration, automated backups, and 1-line CLI installer.
+  2. ThinkAI Delivery Platform (https://learning.thinkai.id.vn) - Continuous GitOps CI/CD delivery platform with Argo CD, Tailscale Zero-Trust mesh networking, and automated recovery baselines.
+  3. Enterprise SAST Quality Gates & Security Hardening (Healthcare Web & API Infrastructure at Ho Chi Minh City Oncology Hospital with SonarQube & CodeQL).
+- Core Technical Stack: Go, Kubernetes (K3s), Linux Administration, Docker, Podman, Argo CD, SonarQube SAST Security Gates, PostgreSQL, Tailscale Zero-Trust, Next.js.
+- Academic Background & Honors: Bachelor of Software Engineering from HUTECH University (GPA 3.24/4.0), IT Got Talent 2025 Semifinalist.
+
+Provide a comprehensive technical assessment of his architectural expertise, DevOps & systems engineering capabilities, and craft web delivery standards.`,
+      askAiHint: "Click to query ChatGPT, Gemini, Claude, Perplexity or Manus with engineering background & studio products.",
+      askAiAria: "Ask {name} about Binh Minh and ThinkAI Studio",
+      connect: "(CONNECT)",
+      backToTop: "Back to top ↑",
+      availability: "Open for DevOps, Systems & Web Engineering",
+      copyright: "ThinkAI Studio · Binh Minh",
+    },
+    ocean: {
+      reloadAria: "Reload and return to top",
+      quote: "『Reliable Infrastructure for Production.』",
+      holdPrompt: "HOLD TO CREATE WAVES (PRESS & HOLD)",
+      stirring: "STIRRING OCEAN TIDES",
+      equilibrium: "EQUILIBRIUM REACHED · WAVES SURGING",
     },
     skills: {
       title: "Capabilities proven in the work.",
@@ -139,49 +459,213 @@ export const copy: Localized<{
         { label: "Familiar with", proof: "Used in labs, coursework or smaller exercises; not presented here as production evidence.", items: ["Python", "Bash", "GitLab CI/CD", "Terraform", "Cloudflare"] },
       ],
     },
-    education: {
-      title: "A software engineering foundation.",
-      school: "HUTECH University, 2022-2026",
-      degree: "Bachelor of Software Engineering. GPA 3.24. English B1.",
-      recognition: { label: "Recognition", title: "IT Got Talent 2025", detail: "Semifinalist" },
-    },
-    contact: {
-      title: "Open to DevOps work where reliable delivery matters.",
-      body: "I am looking for a DevOps Engineer role where automation, reliability and clear operational ownership matter.",
-      email: "Email Minh",
-      cv: "Download DevOps CV",
-    },
-    footer: "Binh Minh, DevOps Engineer, Ho Chi Minh City",
   },
   vi: {
-    nav: { work: "Dự án", experience: "Kinh nghiệm", skills: "Kỹ năng", about: "Thông tin", resume: "CV DevOps" },
+    nav: {
+      work: "Sản phẩm",
+      experience: "Kinh nghiệm",
+      skills: "Kỹ năng",
+      about: "Giới thiệu",
+      resume: "CV DevOps ↗",
+      contact: "Liên hệ",
+      menu: "Menu",
+      close: "Đóng",
+      switchLangAria: "Chuyển sang Tiếng Anh",
+    },
     hero: {
+      eyebrow: "STUDIO HỆ THỐNG & VẬN HÀNH",
+      headline: "PHÁT HÀNH\nTIN CẬY",
+      subline: "HẠ TẦNG DẠNG MÃ NGUỒN · NỀN TẢNG GITOPS · HỆ THỐNG WEB TINH GỌN",
       status: "Sẵn sàng cho cơ hội DevOps",
       roleHeadline: "Kỹ sư DevOps",
       statement: "Tôi xây hệ thống phân phối dễ phát hành, vận hành và phục hồi hơn.",
       body: "Kỹ sư Phần mềm mới tốt nghiệp, tập trung vào hệ thống phía sau các dịch vụ đáng tin cậy: CI/CD, container, Linux infrastructure và kiểm soát bảo mật thực dụng.",
-      primary: "Xem case study",
+      primary: "Bắt đầu dự án",
       secondary: "Tải CV DevOps",
     },
+    carousel: {
+      slides: [
+        {
+          tag: "01/03",
+          title: "CLI & KHẢ NĂNG LẶP LẠI",
+          desc: "Mọi ứng dụng và cấu hình hạ tầng đều được cấp phát dự đoán được qua CLI và tự động hóa GitOps, hoàn toàn không thao tác thủ công thiếu kiểm soát.",
+        },
+        {
+          tag: "02/03",
+          title: "GITOPS & ZERO-TRUST",
+          desc: "Đồng bộ liên tục với Argo CD, vận hành Podman rootless và mạng Tailscale Zero-Trust riêng tư cho mọi máy chủ kết nối.",
+        },
+        {
+          tag: "03/03",
+          title: "GIÁM SÁT & PHỤC HỒI",
+          desc: "Chỉ số thời gian thực, tự động theo dõi SLO, cảnh báo tức thì qua webhook n8n và baseline tự động phục hồi dưới một giây.",
+        },
+      ],
+      narrativeHeadline: "Tôi xây dựng các hệ thống phân phối dễ phát hành, vận hành và phục hồi hơn, từ homelab bare-metal cá nhân, CI/CD pipeline GitOps đến nền tảng web hiệu năng cao. Mỗi bản phát hành đều lặp lại được, đo lường được và hoàn toàn trong tầm kiểm soát.",
+      narrativeBody: "Cử nhân Kỹ thuật Phần mềm từ Đại học HUTECH (GPA 3.24/4.0), người sáng lập ThinkAI Studio. Thực chứng qua kinh nghiệm DevOps thực tế: điều phối container Podman rootless, cổng kiểm soát bảo mật SAST tại Bệnh viện Ung Bướu và mạng riêng ảo zero-trust.",
+      prevSlide: "Slide trước",
+      nextSlide: "Slide tiếp theo",
+    },
     work: {
+      sectionLabel: "Sản phẩm",
+      systemsLive: "03 Hệ thống trực tiếp",
+      copyCli: "SAO CHÉP CLI",
+      copied: "ĐÃ CHÉP",
+      openSystem: "Mở Hệ Thống",
+      architecture: "Kiến trúc & Báo cáo",
       title: "Công việc phía sau mỗi lần phát hành.",
       body: "Hai case study đặt kết quả trong CV cạnh bằng chứng repository: một operations workbench riêng tư và một delivery path cho nền tảng giáo dục.",
       source: "Xem mã nguồn",
       live: "Xem live",
+      statusLive: "TRỰC TUYẾN",
       preview: "Xem preview OpenScreen",
-      architecture: "Xem kiến trúc",
       storyLabels: { problem: "Thách thức", approach: "Quyết định kỹ thuật", outcome: "Bằng chứng bàn giao" },
     },
     experience: {
-      title: "Kiểm soát giúp một bản phát hành đáng tin hơn.",
+      sectionLabel: "Kinh nghiệm",
+      eyebrow: "CỔNG BẢO MẬT SAST BỆNH VIỆN",
+      title: "Thực tập sinh An toàn thông tin & Vận hành",
+      role: "Thực tập sinh An toàn thông tin & Vận hành",
+      period: "Bệnh viện Ung Bướu TP. Hồ Chí Minh · 05/2026 – 07/2026",
+      columns: {
+        problemLabel: "THÁCH THỨC",
+        problemDesc: "Hệ thống Web & API bệnh viện đối mặt với rủi ro CSRF, thư viện lỗi thời và thiếu kiểm tra bảo mật tự động.",
+        approachLabel: "GIẢI PHÁP",
+        approachDesc: "Tích hợp SAST (SonarQube & CodeQL) vào GitHub Actions; khắc phục lỗ hổng và chuẩn hóa baseline FTP an toàn.",
+        outcomeLabel: "KẾT QUẢ",
+        outcomeDesc: "Khắc phục 100% lỗ hổng SAST mức High/Medium trước khi phát hành; thiết lập cổng kiểm soát bảo mật tự động liên tục.",
+      },
+      tags: [".NET 8", "SAST CodeQL", "Cổng SonarQube", "Xử lý CSRF", "Vá lỗ hổng gói", "Baseline FTP an toàn"],
       body: "Kỳ thực tập DevOps tập trung vào bảo vệ workflow .NET nội bộ và làm cho đường phát hành có thể lặp lại.",
-      role: "Thực tập sinh DevOps, Bệnh viện Ung Bướu",
-      period: "05/2026 – 07/2026, TP. Hồ Chí Minh",
       story: {
         problem: "Một workflow mua sắm .NET nội bộ cần boundary request chặt hơn và một đường phát hành lặp lại được trước khi triển khai theo quy trình bệnh viện đã duyệt.",
         approach: "Tôi bổ sung GitHub Actions, CodeQL, SonarQube, rà soát API, xử lý CSRF và package-vulnerability; các contract trong repo làm rõ rủi ro access/request mà các kiểm soát này giải quyết.",
         outcome: "Baseline phát hành đặt kiểm tra trước handoff và hỗ trợ triển khai lên máy chủ bệnh viện qua FTP workflow được phê duyệt.",
       },
+    },
+    education: {
+      sectionLabel: "Học vấn",
+      eyebrow: "HỌC VẤN",
+      degree: "Cử nhân Kỹ thuật Phần mềm",
+      school: "Đại học HUTECH · 2022 - 2026",
+      gpaText: "GPA: 3.24 / 4.0 · Trình độ tiếng Anh: B1",
+      coursework: "Chuyên sâu về Điện toán đám mây, Hệ thống phân tán, An toàn mạng, Quản trị Linux và Kiến trúc phần mềm.",
+      tags: ["GPA 3.24", "Kỹ thuật Phần mềm", "HUTECH 2022-2026", "Tiếng Anh B1"],
+      title: "Nền tảng kỹ thuật phần mềm.",
+      recognitionEyebrow: "GHI NHẬN & GIẢI THƯỞNG",
+      recognitions: [
+        {
+          title: "IT Got Talent 2025",
+          subtitle: "Giải Bán kết · Cuộc thi Tài năng Kỹ thuật Hàng đầu",
+          tags: ["IT Got Talent 2025", "Bán kết", "Tài năng Kỹ thuật", "Trọng tâm DevOps"],
+        },
+      ],
+      recognition: { label: "Ghi nhận", title: "IT Got Talent 2025", detail: "Bán kết" },
+    },
+    stack: {
+      cliLabel: "CLI",
+      browseBlueprint: "Xem Bản vẽ Kiến trúc",
+      modernTechStack: { line1: "CÔNG NGHỆ", line2: "HIỆN ĐẠI" },
+      professionalAt: "NĂNG LỰC CHUYÊN SÂU",
+    },
+    cta: {
+      headline: "HỆ THỐNG\nTIN CẬY\nLÀM CHỦ\n→ TRIỂN KHAI",
+      startProject: "Bắt đầu dự án",
+    },
+    contact: {
+      title: "Bắt đầu dự án",
+      body: "Bạn đang ấp ủ một nền tảng web, hạ tầng tự vận hành (self-hosted) hay một dự án hệ thống? Hãy liên hệ trực tiếp qua email hoặc ứng dụng thư điện tử của bạn:",
+      email: "Email cho Minh",
+      cv: "Tải CV DevOps",
+      close: "Đóng",
+      primaryLabel: "(LIÊN HỆ CHÍNH)",
+      responseSla: "Phản hồi trong 4-8h",
+      copyEmail: "Sao chép Email",
+      copiedEmail: "Đã chép!",
+      openGmail: "Mở trong Gmail",
+      defaultMail: "Ứng dụng Mail mặc định",
+      mailSubject: "Trao đổi dự án · ThinkAI Studio",
+      mailBody: "Chào Bình Minh,\n\nTôi muốn thảo luận về dự án liên quan đến...\n\n- Phạm vi / Nhu cầu:\n- Thời gian dự kiến:\n- Ngân sách ước tính:\n\nTrân trọng,",
+      cvTitle: "Hồ sơ Năng lực DevOps",
+      cvSubtitle: "Nguyễn Bình Minh · Cập nhật 2026 · Cử nhân Kỹ thuật Phần mềm (PDF)",
+      downloadCv: "Tải CV",
+      phoneLabel: "Điện thoại / Zalo:",
+    },
+    aboutDrawer: {
+      headerLabel: "Về kỹ sư & studio",
+      close: "Đóng",
+      founderName: "Nguyễn Bình Minh",
+      founderRole: "Kỹ sư DevOps & Hệ thống · Sáng lập ThinkAI Studio",
+      founderStatus: "TP. Hồ Chí Minh, Việt Nam · Sẵn sàng cho dự án & công việc kỹ thuật",
+      downloadCv: "Tải CV DevOps (PDF)",
+      bioParagraphs: [
+        "Xin chào, tôi là Bình Minh. Tôi xây dựng các hệ thống hạ tầng tin cậy, quy trình GitOps CI/CD và website hiệu năng cao dưới thương hiệu ThinkAI Studio, tập trung vào cấu hình dạng mã nguồn (IaC), tự động hóa, và quy trình bảo mật Zero-Trust.",
+        "Tôi tập trung vào giao điểm giữa kỹ thuật hệ thống, an toàn thông tin và trải nghiệm sản phẩm: từ máy chủ Bare-Metal (HostDeck), cụm K3s Kubernetes đến website mượt mà tối ưu chi phí.",
+        "Tôi tin rằng sự kết hợp giữa tư duy hệ thống chặt chẽ và khả năng giám sát toàn diện (Observability) là chìa khóa để giữ cho mọi bản phát hành luôn ổn định, an toàn và dễ phục hồi.",
+      ],
+      productsLabel: "Sản phẩm",
+      productsList: [
+        "HostDeck Bare-Metal Console (hostdeck.thinkai.id.vn)",
+        "Nền tảng phân phối ThinkAI (learning.thinkai.id.vn)",
+        "Tự động hóa cổng kiểm soát SAST bệnh viện",
+      ],
+      stackLabel: "Công nghệ",
+      stackList: [
+        "Go & Kubernetes (K3s)",
+        "Rootless Podman & Docker",
+        "Mạng Tailscale Zero-Trust",
+        "GitHub Actions & Argo CD",
+        "SonarQube & CodeQL SAST",
+        "Next.js & Hệ thống Frontend hiện đại",
+      ],
+      educationLabel: "Học vấn",
+      degree: "Cử nhân Kỹ thuật Phần mềm",
+      schoolMeta: "Đại học HUTECH · 2022-2026 · GPA 3.24 / 4.0 · Tiếng Anh B1",
+      awardTitle: "Bán kết IT Got Talent 2025",
+      awardMeta: "Vinh danh tài năng kỹ thuật xuất sắc · Đại học HUTECH",
+      principlesLabel: "Nguyên tắc cốt lõi",
+      principlesList: [
+        "Hạ tầng dạng mã nguồn (Khai báo toàn diện)",
+        "Giám sát liên tục & Tự động hóa chỉ số SLO",
+        "Bảo mật Zero-Trust mặc định",
+        "Khả năng lặp lại thay vì thao tác thủ công",
+      ],
+      cvPdf: "CV (PDF)",
+    },
+    footer: {
+      navigation: "Điều hướng",
+      studioDetails: "(THÔNG TIN STUDIO)",
+      location: {
+        based: "Trụ sở tại Việt Nam.",
+        mode: "Làm việc từ xa. Phục vụ toàn cầu.",
+      },
+      askAiTitle: "(HỎI AI VỀ BÌNH MINH · THINKAI STUDIO)",
+      askAiPrompt: `Vui lòng phân tích và tóm tắt năng lực kỹ thuật, tiểu sử và portfolio của Nguyễn Bình Minh (Bình Minh), Kỹ sư DevOps & Hệ thống tại Việt Nam và là nhà sáng lập ThinkAI Studio.
+
+Thông tin và tài nguyên chính:
+- Portfolio & Studio: https://binhminh.thinkai.id.vn
+- GitHub: https://github.com/bnhminh1010
+- Các dự án và hệ thống trọng điểm:
+  1. HostDeck Bare-Metal Console (https://hostdeck.thinkai.id.vn) - Giám sát bare-metal homelab đa node, điều phối container Podman rootless, sao lưu SQLite tự động và bộ cài CLI 1 dòng lệnh.
+  2. Nền tảng phân phối ThinkAI (https://learning.thinkai.id.vn) - Nền tảng phân phối GitOps CI/CD liên tục với Argo CD, mạng Tailscale Zero-Trust riêng tư và baseline tự động phục hồi.
+  3. Kiểm soát chất lượng SAST & Gia cố bảo mật (Hạ tầng Web & API tại Bệnh viện Ung Bướu TP.HCM với SonarQube & CodeQL).
+- Kỹ năng cốt lõi: Go, Kubernetes (K3s), Quản trị Linux, Docker, Podman, Argo CD, SonarQube SAST, PostgreSQL, Tailscale Zero-Trust, Next.js.
+- Học vấn & Giải thưởng: Cử nhân Kỹ thuật Phần mềm Đại học HUTECH (GPA 3.24/4.0), Bán kết IT Got Talent 2025.
+
+Hãy đưa ra đánh giá kỹ thuật toàn diện về chuyên môn kiến trúc, năng lực kỹ thuật hệ thống & DevOps, cùng tiêu chuẩn phân phối web hiện đại của anh ấy.`,
+      askAiHint: "Bấm để hỏi ChatGPT, Gemini, Claude, Perplexity hoặc Manus về kỹ năng kỹ thuật & các sản phẩm của studio.",
+      askAiAria: "Hỏi {name} về Bình Minh và ThinkAI Studio",
+      connect: "(KẾT NỐI)",
+      backToTop: "Về đầu trang ↑",
+      availability: "Sẵn sàng cho các dự án DevOps, Hệ thống & Web Engineering",
+      copyright: "ThinkAI Studio · Bình Minh",
+    },
+    ocean: {
+      reloadAria: "Tải lại và về đầu trang",
+      quote: "『Hạ tầng tin cậy sẵn sàng cho Production.』",
+      holdPrompt: "GIỮ CHUỘT ĐỂ TẠO SÓNG (NHẤN & GIỮ)",
+      stirring: "ĐANG KHUẤY ĐỘNG THỦY TRIỀU",
+      equilibrium: "ĐẠT TRẠNG THÁI CÂN BẰNG · SÓNG DÂNG TRÀO",
     },
     skills: {
       title: "Năng lực được chứng minh qua công việc.",
@@ -192,19 +676,6 @@ export const copy: Localized<{
         { label: "Đã làm quen", proof: "Đã dùng trong lab, môn học hoặc bài tập nhỏ; không trình bày tại đây như bằng chứng production.", items: ["Python", "Bash", "GitLab CI/CD", "Terraform", "Cloudflare"] },
       ],
     },
-    education: {
-      title: "Nền tảng kỹ thuật phần mềm.",
-      school: "Đại học HUTECH, 2022-2026",
-      degree: "Cử nhân Kỹ thuật Phần mềm. GPA 3.24. Tiếng Anh B1.",
-      recognition: { label: "Ghi nhận", title: "IT Got Talent 2025", detail: "Bán kết" },
-    },
-    contact: {
-      title: "Sẵn sàng cho vị trí DevOps coi trọng phát hành đáng tin cậy.",
-      body: "Tôi tìm kiếm vị trí DevOps Engineer coi trọng automation, reliability và trách nhiệm vận hành rõ ràng.",
-      email: "Email cho Minh",
-      cv: "Tải CV DevOps",
-    },
-    footer: "Bình Minh, DevOps Engineer, TP. Hồ Chí Minh",
   },
 };
 

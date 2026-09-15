@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { WipeButton } from "./WipeButton";
 import { ButtonTextRoll } from "./ButtonTextRoll";
 import { ArrowRoll } from "./ArrowRoll";
+import { LanguageTransition } from "./LanguageTransition";
+import { useLanguage } from "@/context/LanguageContext";
+import { copy } from "@/data/portfolio";
 
 interface TaiHeaderProps {
   onOpenAbout: () => void;
@@ -16,8 +19,15 @@ interface TaiHeaderProps {
 const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
 
 export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
+  const { language, toggleLanguage, setLanguage } = useLanguage();
+  const prefersReduced = useReducedMotion();
+  const t = copy[language];
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const sliderTransition = prefersReduced
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 500, damping: 35 };
 
   // Hide header when scrolling into the CTA section (#contact) or Footer
   useEffect(() => {
@@ -133,7 +143,9 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             hoverBorderColor="transparent"
             className="group h-8.5 sm:h-9 inline-flex items-center justify-center px-3.5 sm:px-4 rounded-none text-sm sm:text-[15px] font-bold tracking-tight cursor-pointer select-none bg-transparent border-0 active:scale-[0.96] transition-transform duration-150 leading-none shadow-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
           >
-            About
+            <LanguageTransition langKey={language}>
+              {t.nav.about}
+            </LanguageTransition>
           </WipeButton>
           <WipeButton
             as="a"
@@ -145,7 +157,9 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             hoverBorderColor="transparent"
             className="group h-8.5 sm:h-9 inline-flex items-center justify-center px-3.5 sm:px-4 rounded-none text-sm sm:text-[15px] font-bold tracking-tight cursor-pointer select-none bg-transparent border-0 active:scale-[0.96] transition-transform duration-150 leading-none shadow-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
           >
-            Products
+            <LanguageTransition langKey={language}>
+              {t.nav.work}
+            </LanguageTransition>
           </WipeButton>
           <WipeButton
             as="a"
@@ -157,7 +171,9 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             hoverBorderColor="transparent"
             className="group h-8.5 sm:h-9 inline-flex items-center justify-center px-3.5 sm:px-4 rounded-none text-sm sm:text-[15px] font-bold tracking-tight cursor-pointer select-none bg-transparent border-0 active:scale-[0.96] transition-transform duration-150 leading-none shadow-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
           >
-            Work
+            <LanguageTransition langKey={language}>
+              {t.nav.experience}
+            </LanguageTransition>
           </WipeButton>
           <WipeButton
             as="a"
@@ -169,16 +185,76 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             hoverBorderColor="transparent"
             className="group h-8.5 sm:h-9 inline-flex items-center justify-center px-3.5 sm:px-4 rounded-none text-sm sm:text-[15px] font-bold tracking-tight cursor-pointer select-none bg-transparent border-0 active:scale-[0.96] transition-transform duration-150 leading-none shadow-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
           >
-            Contact
+            <LanguageTransition langKey={language}>
+              {t.nav.contact}
+            </LanguageTransition>
           </WipeButton>
         </nav>
 
-        {/* Right: Start a project Button + Mobile Close / Menu Toggle */}
+        {/* Right: Language Switcher + Start a project Button + Mobile Close / Menu Toggle */}
         <div
-          className={`flex items-center gap-3 sm:gap-4 ${
+          className={`flex items-center gap-2.5 sm:gap-3.5 ${
             isHeaderHidden && !isMobileMenuOpen ? "pointer-events-none" : "pointer-events-auto"
           }`}
         >
+          {/* Studio Polished Monolithic Segmented Language Switcher (No '/', No Slop) */}
+          <div
+            data-testid="language-toggle-button"
+            role="group"
+            aria-label={t.nav.switchLangAria}
+            onClick={toggleLanguage}
+            title={t.nav.switchLangAria}
+            className="group relative h-8 sm:h-8.5 inline-flex items-center p-[3px] rounded-none bg-[#09090b]/90 backdrop-blur-md border border-white/15 hover:border-white/30 transition-colors cursor-pointer select-none shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_4px_16px_rgba(0,0,0,0.6)] active:scale-[0.97]"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (language === "en") toggleLanguage();
+                else setLanguage("en");
+              }}
+              data-lang="en"
+              aria-pressed={language === "en"}
+              aria-label="Switch to English"
+              className={`relative z-10 h-full w-8 sm:w-9 flex items-center justify-center font-mono text-[11px] sm:text-xs font-bold tracking-wider transition-colors cursor-pointer ${
+                language === "en" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              {language === "en" && (
+                <motion.span
+                  layoutId="active-header-lang-slider"
+                  className="absolute inset-0 bg-white shadow-sm"
+                  transition={sliderTransition}
+                />
+              )}
+              <span className="relative z-10">EN</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (language === "vi") toggleLanguage();
+                else setLanguage("vi");
+              }}
+              data-lang="vi"
+              aria-pressed={language === "vi"}
+              aria-label="Chuyển sang Tiếng Việt"
+              className={`relative z-10 h-full w-8 sm:w-9 flex items-center justify-center font-mono text-[11px] sm:text-xs font-bold tracking-wider transition-colors cursor-pointer ${
+                language === "vi" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              {language === "vi" && (
+                <motion.span
+                  layoutId="active-header-lang-slider"
+                  className="absolute inset-0 bg-white shadow-sm"
+                  transition={sliderTransition}
+                />
+              )}
+              <span className="relative z-10">VI</span>
+            </button>
+          </div>
+
           <WipeButton
             onClick={onOpenContact}
             wipeColor="#05070a"
@@ -189,7 +265,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             className="group h-8.5 sm:h-9.5 inline-flex items-center justify-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-none text-xs sm:text-[13.5px] font-bold cursor-pointer shadow-lg select-none bg-white border border-white active:scale-[0.94] transition-transform duration-150 leading-none shrink-0"
           >
             <ButtonTextRoll
-              text="Start a project"
+              text={t.hero.primary}
               className="font-bold text-xs sm:text-[13.5px] tracking-tight leading-none"
             />
             <ArrowRoll size="sm" />
@@ -201,7 +277,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
             className="sm:hidden text-white hover:text-neutral-300 font-medium text-sm tracking-tight cursor-pointer px-1 py-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] select-none"
             aria-label="Toggle navigation menu"
           >
-            <div className="relative h-[1.2em] w-11 overflow-hidden text-right flex items-center justify-end">
+            <div className="relative h-[1.2em] w-14 overflow-hidden text-right flex items-center justify-end">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={isMobileMenuOpen ? "Close" : "Menu"}
@@ -211,7 +287,7 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                   transition={{ duration: 0.28, ease: LUXURY_EASE }}
                   className="block text-sm font-medium leading-none"
                 >
-                  {isMobileMenuOpen ? "Close" : "Menu"}
+                  {isMobileMenuOpen ? t.nav.close : t.nav.menu}
                 </motion.span>
               </AnimatePresence>
             </div>
@@ -251,12 +327,12 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
               className="flex flex-col gap-4 text-4xl font-bold tracking-tight text-white pt-2"
             >
               {[
-                { label: "About", action: () => onOpenAbout() },
-                { label: "Products", action: () => handleNavClick("products") },
-                { label: "Work", action: () => handleNavClick("work") },
-                { label: "Contact", action: () => handleNavClick("contact") },
+                { label: t.nav.about, action: () => onOpenAbout() },
+                { label: t.nav.work, action: () => handleNavClick("products") },
+                { label: t.nav.experience, action: () => handleNavClick("work") },
+                { label: t.nav.contact, action: () => handleNavClick("contact") },
                 {
-                  label: "DevOps CV ↗",
+                  label: t.nav.resume,
                   action: () => window.open("/NguyenBinhMinh-DevOpsEngineer-2026.pdf", "_blank"),
                 },
               ].map((item) => (
@@ -288,13 +364,65 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
               ))}
             </motion.div>
 
+            {/* Mobile Language Switcher Row */}
+            <div className="flex items-center justify-between py-3.5 border-y border-white/[0.08] my-3 text-xs font-mono">
+              <div className="flex items-center gap-2 text-neutral-400 font-bold uppercase tracking-wider text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-none bg-emerald-400 animate-pulse" />
+                <LanguageTransition langKey={language}>
+                  <span>{language === "vi" ? "NGÔN NGỮ GIAO DIỆN" : "INTERFACE LANGUAGE"}</span>
+                </LanguageTransition>
+              </div>
+              <div className="relative inline-flex items-center p-[3px] bg-[#09090b] border border-white/15 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (language === "en") toggleLanguage();
+                    else setLanguage("en");
+                  }}
+                  data-lang-mobile="en"
+                  className={`relative z-10 px-3 py-1.5 text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
+                    language === "en" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  {language === "en" && (
+                    <motion.span
+                      layoutId="active-mobile-lang-slider"
+                      className="absolute inset-0 bg-white shadow-sm"
+                      transition={sliderTransition}
+                    />
+                  )}
+                  <span className="relative z-10">ENGLISH</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (language === "vi") toggleLanguage();
+                    else setLanguage("vi");
+                  }}
+                  data-lang-mobile="vi"
+                  className={`relative z-10 px-3 py-1.5 text-xs font-mono font-bold tracking-wider transition-colors cursor-pointer select-none ${
+                    language === "vi" ? "text-black font-extrabold" : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  {language === "vi" && (
+                    <motion.span
+                      layoutId="active-mobile-lang-slider"
+                      className="absolute inset-0 bg-white shadow-sm"
+                      transition={sliderTransition}
+                    />
+                  )}
+                  <span className="relative z-10">TIẾNG VIỆT</span>
+                </button>
+              </div>
+            </div>
+
             {/* Bottom Featured Live Product Callout Card */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.4, delay: 0.28, ease: LUXURY_EASE }}
-              className="mt-8 mb-4"
+              className="mt-2 mb-4"
             >
               <a
                 href="https://hostdeck.thinkai.id.vn"
@@ -314,10 +442,10 @@ export function TaiHeader({ onOpenAbout, onOpenContact }: TaiHeaderProps) {
                   </div>
                   <div className="space-y-0.5 overflow-hidden">
                     <div className="text-xs font-bold text-white tracking-tight truncate">
-                      HostDeck is live — Bare-Metal CLI
+                      {language === "vi" ? "HostDeck đang hoạt động — Bare-Metal CLI" : "HostDeck is live — Bare-Metal CLI"}
                     </div>
                     <div className="text-[10px] font-mono text-neutral-400">
-                      AUGUST 2026
+                      {language === "vi" ? "THÁNG 8, 2026" : "AUGUST 2026"}
                     </div>
                   </div>
                 </div>

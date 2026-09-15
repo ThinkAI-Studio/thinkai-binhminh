@@ -9,16 +9,15 @@ import {
   GraduationCap,
   Award,
   Sparkles,
-  Lock,
   ArrowUpRight,
 } from "lucide-react";
-import { projects, profile } from "@/data/portfolio";
+import { projects, profile, copy } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 import { ThreeHalftoneCanvas } from "@/components/tai-ui/ThreeHalftoneCanvas";
 import { TaiHeader } from "@/components/tai-ui/TaiHeader";
 import { MaskedTextReveal } from "@/components/tai-ui/MaskedTextReveal";
 import { TextRoll } from "@/components/tai-ui/TextRoll";
 import { ButtonTextRoll } from "@/components/tai-ui/ButtonTextRoll";
-import { ProductMockup } from "@/components/tai-ui/ProductMockup";
 import { ParallaxProductCover } from "@/components/tai-ui/ParallaxProductCover";
 import { ArchitectureModal } from "@/components/tai-ui/ArchitectureModal";
 import { AboutDrawer } from "@/components/tai-ui/AboutDrawer";
@@ -27,6 +26,7 @@ import { ArrowRoll } from "@/components/tai-ui/ArrowRoll";
 import { TechLogo } from "@/components/tai-ui/TechLogos";
 import { SmoothScroll } from "@/components/tai-ui/SmoothScroll";
 import { WipeButton } from "@/components/tai-ui/WipeButton";
+import { LanguageTransition } from "@/components/tai-ui/LanguageTransition";
 import {
   OpenAiIcon,
   GeminiIcon,
@@ -36,68 +36,9 @@ import {
 } from "@/components/tai-ui/AiBrandIcons";
 import "./studio.css";
 
-const CHAPTER_SLIDES = [
-  {
-    tag: "01/03",
-    title: "CLI & REPEATABILITY",
-    desc: "Every application and infrastructure configuration is provisioned predictably through CLI and GitOps automation, with zero unreproducible manual clicks.",
-  },
-  {
-    tag: "02/03",
-    title: "GITOPS & ZERO-TRUST",
-    desc: "Continuous reconciliation with Argo CD, rootless Podman execution, and strict Zero-Trust Tailscale mesh networking for all interconnected host nodes.",
-  },
-  {
-    tag: "03/03",
-    title: "OBSERVABILITY & RECOVERY",
-    desc: "Real-time metrics, automated SLO tracking, instant alerting with n8n webhooks, and sub-second automated recovery baselines.",
-  },
-];
-
-const AI_RESEARCH_PROMPT = `Please analyze and summarize the background, engineering skills, and portfolio of Binh Minh (Nguyen Binh Minh), a DevOps & Systems Engineer based in Vietnam and the creator of ThinkAI Studio.
-
-Key information & resources:
-- Portfolio & Studio: https://binhminh.thinkai.id.vn
-- GitHub: https://github.com/bnhminh1010
-- Key Production Projects & Systems:
-  1. HostDeck Bare-Metal Console (https://hostdeck.thinkai.id.vn) - Homelab multi-node observability, rootless Podman container orchestration, automated backups, and 1-line CLI installer.
-  2. ThinkAI Delivery Platform (https://learning.thinkai.id.vn) - Continuous GitOps CI/CD delivery platform with Argo CD, Tailscale Zero-Trust mesh networking, and automated recovery baselines.
-  3. Enterprise SAST Quality Gates & Security Hardening (Healthcare Web & API Infrastructure at Ho Chi Minh City Oncology Hospital with SonarQube & CodeQL).
-- Core Technical Stack: Go, Kubernetes (K3s), Linux Administration, Docker, Podman, Argo CD, SonarQube SAST Security Gates, PostgreSQL, Tailscale Zero-Trust, Next.js.
-- Academic Background & Honors: Bachelor of Software Engineering from HUTECH University (GPA 3.24/4.0), IT Got Talent 2025 Semifinalist, Academic Excellence Scholarship.
-
-Provide a comprehensive technical assessment of his architectural expertise, DevOps & systems engineering capabilities, and craft web delivery standards.`;
-
-const AI_PLATFORMS = [
-  {
-    name: "ChatGPT",
-    icon: OpenAiIcon,
-    url: `https://chatgpt.com/?q=${encodeURIComponent(AI_RESEARCH_PROMPT)}`,
-  },
-  {
-    name: "Gemini",
-    icon: GeminiIcon,
-    url: `https://gemini.google.com/app?prompt=${encodeURIComponent(AI_RESEARCH_PROMPT)}`,
-  },
-  {
-    name: "Claude",
-    icon: ClaudeIcon,
-    url: `https://claude.ai/new?q=${encodeURIComponent(AI_RESEARCH_PROMPT)}`,
-  },
-  {
-    name: "Perplexity",
-    icon: PerplexityIcon,
-    url: `https://www.perplexity.ai/search?q=${encodeURIComponent(AI_RESEARCH_PROMPT)}`,
-  },
-  {
-    name: "Manus",
-    icon: ManusIcon,
-    url: `https://manus.im/?q=${encodeURIComponent(AI_RESEARCH_PROMPT)}`,
-  },
-];
-
 export default function PortfolioPage() {
-  const [lang, setLang] = useState<"vi" | "en">("en");
+  const { language } = useLanguage();
+  const t = copy[language];
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [copiedCli, setCopiedCli] = useState<string | null>(null);
@@ -139,7 +80,7 @@ export default function PortfolioPage() {
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          setActiveSlide((curr) => (curr + 1) % CHAPTER_SLIDES.length);
+          setActiveSlide((curr) => (curr + 1) % t.carousel.slides.length);
           return 0;
         }
         return prev + step;
@@ -147,15 +88,15 @@ export default function PortfolioPage() {
     }, intervalTime);
 
     return () => clearInterval(timer);
-  }, [activeSlide]);
+  }, [activeSlide, t.carousel.slides.length]);
 
   const handlePrevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + CHAPTER_SLIDES.length) % CHAPTER_SLIDES.length);
+    setActiveSlide((prev) => (prev - 1 + t.carousel.slides.length) % t.carousel.slides.length);
     setProgress(0);
   };
 
   const handleNextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % CHAPTER_SLIDES.length);
+    setActiveSlide((prev) => (prev + 1) % t.carousel.slides.length);
     setProgress(0);
   };
 
@@ -164,7 +105,7 @@ export default function PortfolioPage() {
     const updateTime = () => {
       const now = new Date();
       setLiveTime(
-        now.toLocaleTimeString("en-US", {
+        now.toLocaleTimeString(language === "vi" ? "vi-VN" : "en-US", {
           timeZone: "Asia/Ho_Chi_Minh",
           hour: "2-digit",
           minute: "2-digit",
@@ -174,7 +115,7 @@ export default function PortfolioPage() {
       );
       setLiveDate(
         now
-          .toLocaleDateString("en-US", {
+          .toLocaleDateString(language === "vi" ? "vi-VN" : "en-US", {
             timeZone: "Asia/Ho_Chi_Minh",
             weekday: "short",
             month: "short",
@@ -186,7 +127,7 @@ export default function PortfolioPage() {
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [language]);
 
   // ─── BOTTOM OCEAN INTERACTIVE HOLD LOGIC ───
   const updateStirBridge = useCallback((stir: number, clientX?: number, clientY?: number) => {
@@ -243,6 +184,34 @@ export default function PortfolioPage() {
     }, 900);
   };
 
+  const aiPlatforms = [
+    {
+      name: "ChatGPT",
+      icon: OpenAiIcon,
+      url: `https://chatgpt.com/?q=${encodeURIComponent(t.footer.askAiPrompt)}`,
+    },
+    {
+      name: "Gemini",
+      icon: GeminiIcon,
+      url: `https://gemini.google.com/app?prompt=${encodeURIComponent(t.footer.askAiPrompt)}`,
+    },
+    {
+      name: "Claude",
+      icon: ClaudeIcon,
+      url: `https://claude.ai/new?q=${encodeURIComponent(t.footer.askAiPrompt)}`,
+    },
+    {
+      name: "Perplexity",
+      icon: PerplexityIcon,
+      url: `https://www.perplexity.ai/search?q=${encodeURIComponent(t.footer.askAiPrompt)}`,
+    },
+    {
+      name: "Manus",
+      icon: ManusIcon,
+      url: `https://manus.im/?q=${encodeURIComponent(t.footer.askAiPrompt)}`,
+    },
+  ];
+
   return (
     <div className="tai-studio-root selection:bg-white selection:text-black relative min-h-screen">
       {/* ─── 120HZ ULTRA-SMOOTH MOMENTUM SCROLLING ENGINE (LENIS) ─── */}
@@ -267,23 +236,23 @@ export default function PortfolioPage() {
 
         <div className="max-w-6xl mx-auto space-y-6 sm:space-y-7 pointer-events-auto relative z-10">
           {/* ThinkAI Authentic Floating Eyebrow */}
-          <div className="text-xs sm:text-[13.5px] font-mono font-bold tracking-[0.24em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] uppercase select-none">
-            A SYSTEMS STUDIO
-          </div>
+          <LanguageTransition langKey={language} className="text-xs sm:text-[13.5px] font-mono font-bold tracking-[0.24em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] uppercase select-none">
+            {t.hero.eyebrow}
+          </LanguageTransition>
 
           {/* ThinkAI Grotesque Masked Headline with High-Contrast Optical Shadow */}
-          <div className="py-1 sm:py-2">
+          <LanguageTransition langKey={language} className="py-1 sm:py-2">
             <MaskedTextReveal
               as="h1"
-              text={"RELIABLE\nDELIVERY"}
+              text={t.hero.headline}
               className="tai-heading-hero text-white tracking-[-0.026em] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_12px_36px_rgba(0,0,0,0.90)] drop-shadow-[0_24px_64px_rgba(0,0,0,0.80)]"
             />
-          </div>
+          </LanguageTransition>
 
           {/* ThinkAI Floating Subline */}
-          <div className="text-xs sm:text-[13.5px] font-mono font-medium tracking-[0.20em] text-neutral-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] uppercase max-w-2xl mx-auto leading-relaxed select-none px-4">
-            INFRASTRUCTURE AS CODE · GITOPS PLATFORMS · CRAFT WEB SYSTEMS
-          </div>
+          <LanguageTransition langKey={language} className="text-xs sm:text-[13.5px] font-mono font-medium tracking-[0.20em] text-neutral-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] uppercase max-w-2xl mx-auto leading-relaxed select-none px-4">
+            {t.hero.subline}
+          </LanguageTransition>
         </div>
       </section>
 
@@ -302,7 +271,7 @@ export default function PortfolioPage() {
                     wipeColor="#ffffff"
                     textColor="#ffffff"
                     hoverTextColor="#05070a"
-                    ariaLabel="Previous slide"
+                    ariaLabel={t.carousel.prevSlide}
                   >
                     ←
                   </WipeButton>
@@ -312,13 +281,13 @@ export default function PortfolioPage() {
                     wipeColor="#ffffff"
                     textColor="#ffffff"
                     hoverTextColor="#05070a"
-                    ariaLabel="Next slide"
+                    ariaLabel={t.carousel.nextSlide}
                   >
                     →
                   </WipeButton>
                 </div>
                 <div className="px-2.5 py-1 rounded-none bg-white/[0.06] text-xs font-mono font-bold text-neutral-200">
-                  {CHAPTER_SLIDES[activeSlide].tag}
+                  {t.carousel.slides[activeSlide].tag}
                 </div>
 
                 {/* Working Progress Bar */}
@@ -334,7 +303,7 @@ export default function PortfolioPage() {
               <div className="min-h-[140px]">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={activeSlide}
+                    key={`${activeSlide}-${language}`}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
@@ -342,10 +311,10 @@ export default function PortfolioPage() {
                     className="space-y-4"
                   >
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                      {CHAPTER_SLIDES[activeSlide].title}
+                      {t.carousel.slides[activeSlide].title}
                     </h2>
                     <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-light">
-                      {CHAPTER_SLIDES[activeSlide].desc}
+                      {t.carousel.slides[activeSlide].desc}
                     </p>
                   </motion.div>
                 </AnimatePresence>
@@ -354,17 +323,21 @@ export default function PortfolioPage() {
 
             {/* Right Col (5-12): Massive Editorial Headline & Narrative */}
             <div className="lg:col-span-8 space-y-8">
-              <h3 className="text-2xl sm:text-4xl lg:text-6xl font-medium tracking-tight text-white leading-[1.16]">
-                I build delivery systems that are easier to ship, operate and recover, spanning self-hosted
-                homelabs, GitOps CI/CD pipelines, and high-performance web platforms. Every release is
-                repeatable, observable, and fully under your control.
-              </h3>
+              <LanguageTransition
+                langKey={language}
+                as="h3"
+                className="text-2xl sm:text-4xl lg:text-6xl font-medium tracking-tight text-white leading-[1.16]"
+              >
+                {t.carousel.narrativeHeadline}
+              </LanguageTransition>
 
-              <p className="text-base sm:text-lg text-neutral-300 leading-relaxed font-light max-w-4xl">
-                Software Engineering graduate from HUTECH University (GPA 3.24/4.0), founder of ThinkAI Studio.
-                Grounded in real-world DevOps practices: rootless Podman container orchestration, SAST
-                security quality gates at Ung Buou Hospital, and zero-trust mesh networking.
-              </p>
+              <LanguageTransition
+                langKey={language}
+                as="p"
+                className="text-base sm:text-lg text-neutral-300 leading-relaxed font-light max-w-4xl"
+              >
+                {t.carousel.narrativeBody}
+              </LanguageTransition>
             </div>
           </div>
         </div>
@@ -378,11 +351,13 @@ export default function PortfolioPage() {
             <div className="lg:col-span-2 lg:sticky lg:top-24">
               <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-neutral-200">
                 <span className="w-2.5 h-2.5 rounded-none bg-emerald-400" />
-                <span className="uppercase tracking-wider">Products</span>
+                <LanguageTransition langKey={language} as="span" className="uppercase tracking-wider">
+                  {t.work.sectionLabel}
+                </LanguageTransition>
               </div>
-              <span className="block text-xs font-mono text-neutral-500 mt-1">
-                03 Systems Live
-              </span>
+              <LanguageTransition langKey={language} as="span" className="block text-xs font-mono text-neutral-500 mt-1">
+                {t.work.systemsLive}
+              </LanguageTransition>
             </div>
 
             {/* Right 10 Cols: Asymmetric Split Grid Collection */}
@@ -398,10 +373,10 @@ export default function PortfolioPage() {
                       <div className="lg:col-span-7">
                         <ParallaxProductCover
                           image={project.preview.image}
-                          title={project.content[lang].title}
+                          title={project.content[language].title}
                           liveUrl={project.liveUrl}
                           mark={project.mark}
-                          status="LIVE"
+                          status={t.work.statusLive}
                           priority={index === 0}
                         />
                       </div>
@@ -424,19 +399,19 @@ export default function PortfolioPage() {
                         </div>
 
                         {/* Title & Category Eyebrow */}
-                        <div className="space-y-2">
+                        <LanguageTransition langKey={language} className="space-y-2">
                           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white uppercase">
-                            {project.content[lang].title}
+                            {project.content[language].title}
                           </h3>
                           <p className="text-xs sm:text-sm font-mono text-neutral-300 uppercase tracking-wider font-semibold">
-                            {project.content[lang].category}
+                            {project.content[language].category}
                           </p>
-                        </div>
+                        </LanguageTransition>
 
                         {/* Punchy 2-line Value Proposition Summary */}
-                        <p className="text-neutral-200 text-sm sm:text-base leading-relaxed">
-                          {project.content[lang].summary}
-                        </p>
+                        <LanguageTransition langKey={language} as="p" className="text-neutral-200 text-sm sm:text-base leading-relaxed">
+                          {project.content[language].summary}
+                        </LanguageTransition>
 
                         {/* Tech Stack Chips */}
                         <div className="flex flex-wrap gap-1.5 pt-1">
@@ -458,7 +433,9 @@ export default function PortfolioPage() {
                                 {project.metric.value}
                               </span>
                               <span className="font-mono text-xs sm:text-sm font-bold text-emerald-400">
-                                {project.metric.label[lang].split("•")[0]?.trim()}
+                                <LanguageTransition langKey={language} as="span">
+                                  {project.metric.label[language].split("•")[0]?.trim()}
+                                </LanguageTransition>
                               </span>
                             </div>
                             {project.cliCommand && (
@@ -470,19 +447,21 @@ export default function PortfolioPage() {
                                 {copiedCli === project.cliCommand ? (
                                   <>
                                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                    <span className="text-emerald-400 font-bold">COPIED</span>
+                                    <span className="text-emerald-400 font-bold">{t.work.copied}</span>
                                   </>
                                 ) : (
                                   <>
                                     <Copy className="w-3.5 h-3.5 text-neutral-300" />
-                                    <span>COPY CLI</span>
+                                    <span>{t.work.copyCli}</span>
                                   </>
                                 )}
                               </button>
                             )}
                           </div>
                           <p className="font-mono text-xs text-neutral-300 truncate">
-                            {project.metric.label[lang]}
+                            <LanguageTransition langKey={language} as="span">
+                              {project.metric.label[language]}
+                            </LanguageTransition>
                           </p>
                         </div>
 
@@ -495,7 +474,9 @@ export default function PortfolioPage() {
                               rel="noreferrer"
                               className="inline-flex items-center gap-2 px-5 py-3 rounded-none bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg"
                             >
-                              <span>{lang === "vi" ? "Mở Hệ Thống" : "Open System"}</span>
+                              <LanguageTransition langKey={language} as="span">
+                                {t.work.openSystem}
+                              </LanguageTransition>
                               <ArrowUpRight className="w-3.5 h-3.5 text-black" />
                             </a>
                           )}
@@ -505,7 +486,9 @@ export default function PortfolioPage() {
                             onClick={() => setSelectedArchProject(project.id)}
                             className="inline-flex items-center gap-2 px-5 py-3 rounded-none bg-[#16161b] hover:bg-[#222228] border border-white/25 hover:border-white/50 text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
                           >
-                            <span>{lang === "vi" ? "Kiến trúc & Báo cáo" : "Architecture & Case Study"}</span>
+                            <LanguageTransition langKey={language} as="span">
+                              {t.work.architecture}
+                            </LanguageTransition>
                             <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400" />
                           </button>
                         </div>
@@ -528,57 +511,59 @@ export default function PortfolioPage() {
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-neutral-200">
                 <span className="w-2.5 h-2.5 rounded-none bg-neutral-300" />
-                <span>Experience</span>
+                <LanguageTransition langKey={language} as="span">
+                  {t.experience.sectionLabel}
+                </LanguageTransition>
               </div>
             </div>
 
             <div className="lg:col-span-10 space-y-12">
               <div className="border-t border-white/[0.08] pt-8 space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                  <div>
+                  <LanguageTransition langKey={language}>
                     <span className="tai-label text-neutral-400 font-mono font-bold text-xs">
-                      HOSPITAL SAST SECURITY GATES
+                      {t.experience.eyebrow}
                     </span>
                     <h3 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mt-2">
-                      Information Security & Operations Intern
+                      {t.experience.title}
                     </h3>
-                  </div>
-                  <div className="text-xs sm:text-sm font-mono text-neutral-400 shrink-0">
-                    Ho Chi Minh City Oncology Hospital · 05/2026 – 07/2026
-                  </div>
+                  </LanguageTransition>
+                  <LanguageTransition langKey={language} as="div" className="text-xs sm:text-sm font-mono text-neutral-400 shrink-0">
+                    {t.experience.period}
+                  </LanguageTransition>
                 </div>
 
                 {/* 3-Pillar Clean Hairline Columns with Scaled Font */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs border-y border-white/[0.08] py-8">
+                <LanguageTransition langKey={language} className="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs border-y border-white/[0.08] py-8">
                   <div>
                     <span className="text-neutral-400 font-mono text-xs font-bold uppercase tracking-wider block">
-                      PROBLEM
+                      {t.experience.columns.problemLabel}
                     </span>
                     <p className="text-sm sm:text-base text-neutral-200 mt-2.5 leading-relaxed font-light">
-                      Hospital Web & API systems faced CSRF risks, legacy packages, and lacked automated security gating.
+                      {t.experience.columns.problemDesc}
                     </p>
                   </div>
                   <div>
                     <span className="text-neutral-400 font-mono text-xs font-bold uppercase tracking-wider block">
-                      APPROACH
+                      {t.experience.columns.approachLabel}
                     </span>
                     <p className="text-sm sm:text-base text-neutral-200 mt-2.5 leading-relaxed font-light">
-                      Integrated SAST (SonarQube & CodeQL) into GitHub Actions; resolved vulnerabilities and standardized secure FTP baselines.
+                      {t.experience.columns.approachDesc}
                     </p>
                   </div>
                   <div>
                     <span className="text-neutral-400 font-mono text-xs font-bold uppercase tracking-wider block">
-                      OUTCOME
+                      {t.experience.columns.outcomeLabel}
                     </span>
                     <p className="text-sm sm:text-base text-neutral-200 mt-2.5 leading-relaxed font-light">
-                      100% of High/Medium SAST vulnerabilities remediated before release; established continuous automated security gates.
+                      {t.experience.columns.outcomeDesc}
                     </p>
                   </div>
-                </div>
+                </LanguageTransition>
 
                 {/* Tech Tags */}
                 <div className="flex flex-wrap gap-2 pt-1">
-                  {[".NET 8", "CodeQL SAST", "SonarQube Gates", "CSRF Remediation", "Package Fixes", "FTP Secure Baseline"].map((tag) => (
+                  {t.experience.tags.map((tag) => (
                     <span
                       key={tag}
                       className="tai-tag-pill px-3 py-1.5 rounded-none text-xs sm:text-[13px] font-mono cursor-default"
@@ -596,32 +581,34 @@ export default function PortfolioPage() {
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-neutral-200">
                 <span className="w-2.5 h-2.5 rounded-none bg-neutral-300" />
-                <span>Education</span>
+                <LanguageTransition langKey={language} as="span">
+                  {t.education.sectionLabel}
+                </LanguageTransition>
               </div>
             </div>
 
             <div className="lg:col-span-10 grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Education Block */}
-              <div className="border-t border-white/[0.08] pt-8 space-y-5">
+              <LanguageTransition langKey={language} className="border-t border-white/[0.08] pt-8 space-y-5">
                 <span className="tai-label text-neutral-400 font-mono font-bold text-xs flex items-center gap-2 tracking-widest">
-                  <GraduationCap className="w-4 h-4 text-neutral-400" /> EDUCATION
+                  <GraduationCap className="w-4 h-4 text-neutral-400" /> {t.education.eyebrow}
                 </span>
                 <div>
                   <h4 className="text-2xl sm:text-4xl lg:text-4xl font-bold text-white tracking-tight">
-                    Bachelor of Software Engineering
+                    {t.education.degree}
                   </h4>
                   <div className="text-xs sm:text-sm font-mono text-neutral-400 mt-1.5">
-                    HUTECH University · 2022 - 2026
+                    {t.education.school}
                   </div>
                   <div className="text-sm sm:text-base font-semibold text-white font-mono mt-2.5">
-                    GPA: 3.24 / 4.0 · English Proficiency: B1
+                    {t.education.gpaText}
                   </div>
                 </div>
                 <p className="text-sm sm:text-base text-neutral-200 leading-relaxed font-light">
-                  Focused coursework on Cloud Computing, Distributed Systems, Network Security, Linux Administration, and Software Architecture.
+                  {t.education.coursework}
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
-                  {["GPA 3.24", "Software Engineering", "HUTECH 2022-2026", "English B1"].map((tag) => (
+                  {t.education.tags.map((tag) => (
                     <span
                       key={tag}
                       className="tai-tag-pill px-3 py-1 rounded-none text-xs sm:text-[13px] font-mono cursor-default"
@@ -630,35 +617,28 @@ export default function PortfolioPage() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </LanguageTransition>
 
               {/* Awards & Recognition Block */}
-              <div className="border-t border-white/[0.08] pt-8 space-y-5">
+              <LanguageTransition langKey={language} className="border-t border-white/[0.08] pt-8 space-y-5">
                 <span className="tai-label text-neutral-400 font-mono font-bold text-xs flex items-center gap-2 tracking-widest">
-                  <Award className="w-4 h-4 text-neutral-400" /> RECOGNITION
+                  <Award className="w-4 h-4 text-neutral-400" /> {t.education.recognitionEyebrow}
                 </span>
                 <div className="space-y-6">
-                  <div>
-                    <h4 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-white tracking-tight">
-                      IT Got Talent 2025
-                    </h4>
-                    <div className="text-xs sm:text-sm font-mono text-neutral-400 mt-1">
-                      Semifinalist Award · Top Technical Talent Competition
+                  {t.education.recognitions.map((rec) => (
+                    <div key={rec.title}>
+                      <h4 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-white tracking-tight">
+                        {rec.title}
+                      </h4>
+                      <div className="text-xs sm:text-sm font-mono text-neutral-400 mt-1">
+                        {rec.subtitle}
+                      </div>
                     </div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl sm:text-2xl lg:text-2xl font-bold text-white tracking-tight">
-                      Academic Excellence Scholarship
-                    </h4>
-                    <div className="text-xs sm:text-sm font-mono text-neutral-400 mt-1">
-                      HUTECH University · High Academic Achievement
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-2">
-                  {["IT Got Talent 2025", "Semifinalist", "Academic Scholarship", "DevOps Focus"].map((tag) => (
+                  {t.education.recognitions.flatMap((r) => r.tags).map((tag) => (
                     <span
                       key={tag}
                       className="tai-tag-pill px-3 py-1 rounded-none text-xs sm:text-[13px] font-mono cursor-default"
@@ -667,7 +647,7 @@ export default function PortfolioPage() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </LanguageTransition>
             </div>
           </div>
         </div>
@@ -680,7 +660,9 @@ export default function PortfolioPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/[0.08] pb-6 sm:pb-8 text-white gap-4 sm:gap-0">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-neutral-400">
               <span className="w-2 h-2 rounded-none bg-neutral-400" />
-              <span>CLI</span>
+              <LanguageTransition langKey={language} as="span">
+                {t.stack.cliLabel}
+              </LanguageTransition>
             </div>
             <WipeButton
               as="a"
@@ -690,29 +672,31 @@ export default function PortfolioPage() {
               hoverTextColor="#05070a"
               className="px-4 sm:px-5 py-2.5 rounded-none flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base font-bold bg-white/[0.05] border border-white/15 cursor-pointer w-full sm:w-auto text-center"
             >
-              <span>Browse Architecture Blueprint</span>
+              <LanguageTransition langKey={language} as="span">
+                {t.stack.browseBlueprint}
+              </LanguageTransition>
               <span className="sm:hidden font-mono text-xs">→</span>
             </WipeButton>
             <div className="hidden sm:block text-2xl font-mono text-neutral-400">(→)</div>
           </div>
 
           {/* Clean Masked Rolling Headline - Rolls 2 times on hover */}
-          <div className="text-center py-6">
+          <LanguageTransition langKey={language} className="text-center py-6">
             <div className="tai-heading-xl text-white tracking-tighter block leading-[0.88]">
               <div className="overflow-hidden">
-                <TextRoll text="MODERN" rolls={2} />
+                <TextRoll key={`line1-${language}`} text={t.stack.modernTechStack.line1} rolls={2} />
               </div>
               <div className="overflow-hidden mt-1">
-                <TextRoll text="TECH STACK" rolls={2} stagger={0.02} />
+                <TextRoll key={`line2-${language}`} text={t.stack.modernTechStack.line2} rolls={2} stagger={0.02} />
               </div>
             </div>
-          </div>
+          </LanguageTransition>
 
           {/* Tech Stack Tiles Grid (Enlarged Height & Icons) */}
           <div className="pt-8 space-y-4">
-            <div className="text-xs font-mono text-neutral-400 uppercase tracking-widest font-bold">
-              PROFESSIONAL AT
-            </div>
+            <LanguageTransition langKey={language} as="div" className="text-xs font-mono text-neutral-400 uppercase tracking-widest font-bold">
+              {t.stack.professionalAt}
+            </LanguageTransition>
 
             {/* Top 3 Core Foundation Cards */}
             <div className="tai-tech-grid-top">
@@ -752,11 +736,13 @@ export default function PortfolioPage() {
       <section id="contact" className="relative z-10 min-h-[92vh] flex items-center justify-center py-28 px-6 bg-transparent pointer-events-none">
         <div className="space-y-10 max-w-5xl text-center flex flex-col items-center justify-center pointer-events-auto">
           {/* Massive Heading */}
-          <MaskedTextReveal
-            as="h2"
-            text={"RELIABLE\nSYSTEMS\nYOU OWN\n→ SHIP"}
-            className="tai-heading-xl text-white tracking-tighter drop-shadow-[0_12px_40px_rgba(0,0,0,0.85)]"
-          />
+          <LanguageTransition langKey={language}>
+            <MaskedTextReveal
+              as="h2"
+              text={t.cta.headline}
+              className="tai-heading-xl text-white tracking-tighter drop-shadow-[0_12px_40px_rgba(0,0,0,0.85)]"
+            />
+          </LanguageTransition>
 
           {/* Start a project Button with Forward Directional Wipe, Arrow Roll & Bounce */}
           <div className="pt-6">
@@ -769,10 +755,12 @@ export default function PortfolioPage() {
               hoverBorderColor="rgba(255, 255, 255, 0.4)"
               className="group h-16 sm:h-20 inline-flex items-center justify-center gap-4 sm:gap-5 px-8 sm:px-12 rounded-none text-xl sm:text-[26px] font-extrabold cursor-pointer shadow-2xl select-none bg-white border border-white active:scale-[0.94] transition-transform duration-150 leading-none"
             >
-              <ButtonTextRoll
-                text="Start a project"
-                className="font-extrabold text-xl sm:text-[26px] tracking-tight leading-none"
-              />
+              <LanguageTransition langKey={language} as="span">
+                <ButtonTextRoll
+                  text={t.cta.startProject}
+                  className="font-extrabold text-xl sm:text-[26px] tracking-tight leading-none"
+                />
+              </LanguageTransition>
               <ArrowRoll size="lg" />
             </WipeButton>
           </div>
@@ -788,7 +776,9 @@ export default function PortfolioPage() {
               {/* Col 1: Navigation Label */}
               <div className="md:col-span-2 flex items-start gap-2 text-sm font-bold text-neutral-300">
                 <span className="w-2.5 h-2.5 rounded-none bg-neutral-400 mt-1" />
-                <span>Navigation</span>
+                <LanguageTransition langKey={language} as="span">
+                  {t.footer.navigation}
+                </LanguageTransition>
               </div>
 
               {/* Col 2: Vertical Navigation Links with Balanced Scale & Forward Wipe */}
@@ -800,7 +790,9 @@ export default function PortfolioPage() {
                   hoverTextColor="#05070a"
                   className="text-left px-3 py-1 -ml-3 rounded-none cursor-pointer w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
-                  About
+                  <LanguageTransition langKey={language} as="span">
+                    {t.nav.about}
+                  </LanguageTransition>
                 </WipeButton>
                 <WipeButton
                   as="a"
@@ -810,7 +802,9 @@ export default function PortfolioPage() {
                   hoverTextColor="#05070a"
                   className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
-                  Products
+                  <LanguageTransition langKey={language} as="span">
+                    {t.nav.work}
+                  </LanguageTransition>
                 </WipeButton>
                 <WipeButton
                   as="a"
@@ -820,7 +814,9 @@ export default function PortfolioPage() {
                   hoverTextColor="#05070a"
                   className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
-                  Work
+                  <LanguageTransition langKey={language} as="span">
+                    {t.nav.experience}
+                  </LanguageTransition>
                 </WipeButton>
                 <WipeButton
                   as="a"
@@ -830,16 +826,18 @@ export default function PortfolioPage() {
                   hoverTextColor="#05070a"
                   className="text-left px-3 py-1 -ml-3 rounded-none w-fit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans normal-case"
                 >
-                  Contact
+                  <LanguageTransition langKey={language} as="span">
+                    {t.nav.contact}
+                  </LanguageTransition>
                 </WipeButton>
               </div>
 
               {/* Col 3: Studio Details & AI Glyphs */}
               <div className="md:col-span-3 space-y-8 text-sm">
                 <div className="space-y-2">
-                  <div className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold">
-                    (STUDIO DETAILS)
-                  </div>
+                  <LanguageTransition langKey={language} as="div" className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold">
+                    {t.footer.studioDetails}
+                  </LanguageTransition>
                   <div>
                     <WipeButton
                       as="a"
@@ -866,35 +864,35 @@ export default function PortfolioPage() {
                       ↳ {profile.email}
                     </WipeButton>
                   </div>
-                  <div className="text-neutral-400 leading-relaxed pt-2 text-xs font-light">
-                    Based in Vietnam.<br />
-                    Remote-first. Working worldwide.
-                  </div>
+                  <LanguageTransition langKey={language} as="div" className="text-neutral-400 leading-relaxed pt-2 text-xs font-light">
+                    {t.footer.location.based}<br />
+                    {t.footer.location.mode}
+                  </LanguageTransition>
                 </div>
 
                 {/* Ask AI Section with Direct Deep-Links to ChatGPT, Gemini, Claude, Perplexity, Manus */}
                 <div className="space-y-3 pt-1">
                   <div className="flex items-center justify-between">
-                    <div className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold">
-                      (ASK AI ABOUT BINH MINH · THINKAI STUDIO)
-                    </div>
+                    <LanguageTransition langKey={language} as="div" className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold">
+                      {t.footer.askAiTitle}
+                    </LanguageTransition>
                   </div>
                   <div className="flex items-center gap-2.5 text-white">
-                    {AI_PLATFORMS.map((platform) => {
+                    {aiPlatforms.map((platform) => {
                       const IconComponent = platform.icon;
                       return (
                         <WipeButton
                           key={platform.name}
                           onClick={() => {
                             if (navigator.clipboard) {
-                              navigator.clipboard.writeText(AI_RESEARCH_PROMPT);
+                              navigator.clipboard.writeText(t.footer.askAiPrompt);
                             }
                             window.open(platform.url, "_blank", "noopener,noreferrer");
                           }}
                           wipeColor="#ffffff"
                           textColor="#ffffff"
                           hoverTextColor="#05070a"
-                          ariaLabel={`Ask ${platform.name} about Binh Minh and ThinkAI Studio`}
+                          ariaLabel={t.footer.askAiAria.replace("{name}", platform.name)}
                           className="w-9 h-9 rounded-none flex items-center justify-center cursor-pointer select-none border border-white/15 bg-white/[0.04] shadow-md"
                         >
                           <IconComponent className="w-4 h-4" />
@@ -902,17 +900,17 @@ export default function PortfolioPage() {
                       );
                     })}
                   </div>
-                  <div className="text-xs font-mono text-neutral-400 leading-relaxed max-w-xs">
-                    Click to query ChatGPT, Gemini, Claude, Perplexity or Manus with engineering background & studio products.
-                  </div>
+                  <LanguageTransition langKey={language} as="div" className="text-xs font-mono text-neutral-400 leading-relaxed max-w-xs">
+                    {t.footer.askAiHint}
+                  </LanguageTransition>
                 </div>
               </div>
 
               {/* Col 4: Socials with Forward Wipe */}
               <div className="md:col-span-3 space-y-2 text-sm font-semibold text-white">
-                <div className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold mb-3">
-                  (CONNECT)
-                </div>
+                <LanguageTransition langKey={language} as="div" className="text-neutral-500 uppercase tracking-widest font-mono text-xs font-bold mb-3">
+                  {t.footer.connect}
+                </LanguageTransition>
                 <div>
                   <WipeButton
                     as="a"
@@ -947,7 +945,7 @@ export default function PortfolioPage() {
             {/* Bottom Bar */}
             <div className="flex flex-col sm:flex-row items-center justify-between pt-8 sm:pt-10 text-xs font-mono text-neutral-400 border-t border-white/[0.08] gap-4">
               <div>
-                Vietnam {liveTime || "02:35:57 PM"} <br />
+                {language === "vi" ? "Việt Nam" : "Vietnam"} {liveTime || "02:35:57 PM"} <br />
                 {liveDate || "MON, AUG 31"}
               </div>
               <div className="text-center">
@@ -959,13 +957,19 @@ export default function PortfolioPage() {
                   hoverTextColor="#05070a"
                   className="px-2.5 py-1 rounded-none inline-block text-xs"
                 >
-                  Back to top ↑
+                  <LanguageTransition langKey={language} as="span">
+                    {t.footer.backToTop}
+                  </LanguageTransition>
                 </WipeButton>{" "}
                 <br />
-                <span className="text-white mt-0.5 inline-block">Open for DevOps, Systems & Web Engineering</span>
+                <LanguageTransition langKey={language} as="span" className="text-white mt-0.5 inline-block">
+                  {t.footer.availability}
+                </LanguageTransition>
               </div>
               <div className="text-right">
-                ©{new Date().getFullYear()} ThinkAI Studio · Binh Minh
+                <LanguageTransition langKey={language} as="span">
+                  ©{new Date().getFullYear()} {t.footer.copyright}
+                </LanguageTransition>
               </div>
             </div>
           </div>
@@ -1007,7 +1011,7 @@ export default function PortfolioPage() {
               }
             }}
             className="relative z-10 inline-flex items-center justify-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-none bg-black/50 border border-white/20 backdrop-blur-md text-white font-bold text-xs sm:text-sm tracking-wider uppercase font-mono shadow-2xl pointer-events-auto cursor-pointer hover:bg-black/70 transition-all leading-none shrink-0"
-            aria-label="Reload and return to top"
+            aria-label={t.ocean.reloadAria}
           >
             <div className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-none overflow-hidden shrink-0 flex items-center justify-center">
               <Image
@@ -1024,7 +1028,9 @@ export default function PortfolioPage() {
           </button>
 
           <div className="relative z-10 hidden md:inline-flex items-center justify-center px-4 py-2.5 rounded-none bg-black/50 border border-white/20 backdrop-blur-md text-white font-mono text-xs sm:text-sm tracking-wide shadow-2xl leading-none pointer-events-none whitespace-nowrap">
-            <span className="leading-none">『Reliable Infrastructure for Production.』</span>
+            <LanguageTransition langKey={language} as="span" className="leading-none">
+              {t.ocean.quote}
+            </LanguageTransition>
           </div>
 
           {/* Polished Floating Interactive Hold Pill (ThinkAI Studio) */}
@@ -1072,16 +1078,16 @@ export default function PortfolioPage() {
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span className="text-emerald-300 font-bold tracking-wide">
-                        EQUILIBRIUM REACHED · WAVES SURGING
+                        {t.ocean.equilibrium}
                       </span>
                     </>
                   ) : isOceanHolding ? (
                     <>
                       <Sparkles className="w-3.5 h-3.5 text-white animate-spin shrink-0" />
-                      <span>STIRRING OCEAN TIDES {holdProgress}%</span>
+                      <span>{t.ocean.stirring} {holdProgress}%</span>
                     </>
                   ) : (
-                    <span>HOLD TO CREATE WAVES (PRESS & HOLD)</span>
+                    <span>{t.ocean.holdPrompt}</span>
                   )}
                 </span>
               </motion.div>
@@ -1094,20 +1100,21 @@ export default function PortfolioPage() {
       <AboutDrawer
         isOpen={isAboutOpen}
         onClose={() => setIsAboutOpen(false)}
-        lang={lang}
+        lang={language}
       />
 
       {/* ─── 11. CONTACT & PROJECT INQUIRY MODAL ─── */}
       <ContactModal
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
+        lang={language}
       />
 
       {/* ─── 12. ARCHITECTURE & DEEP DIVE MODAL ─── */}
       <ArchitectureModal
         projectId={selectedArchProject}
         onClose={() => setSelectedArchProject(null)}
-        lang={lang}
+        lang={language}
       />
     </div>
   );

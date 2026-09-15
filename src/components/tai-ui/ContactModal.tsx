@@ -5,18 +5,20 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Copy, Check, ExternalLink, Mail, Download, FileText } from "lucide-react";
 import { ButtonTextRoll } from "./ButtonTextRoll";
 import { WipeButton } from "./WipeButton";
-import { profile } from "@/data/portfolio";
+import { profile, copy } from "@/data/portfolio";
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
+  lang?: "vi" | "en";
 }
 
 const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
 
-export function ContactModal({ isOpen, onClose }: ContactModalProps) {
+export function ContactModal({ isOpen, onClose, lang = "en" }: ContactModalProps) {
   const prefersReduced = useReducedMotion();
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
+  const t = copy[lang].contact;
 
   const primaryEmail = profile.email; // pata10102004@gmail.com
 
@@ -48,15 +50,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
     primaryEmail
-  )}&su=${encodeURIComponent("Project Inquiry · ThinkAI Studio")}&body=${encodeURIComponent(
-    "Hi Binh Minh,\n\nI would like to discuss a project regarding...\n\n- Scope/Needs:\n- Timeline:\n- Budget range:\n\nBest regards,"
-  )}`;
+  )}&su=${encodeURIComponent(t.mailSubject)}&body=${encodeURIComponent(t.mailBody)}`;
 
   const mailtoUrl = `mailto:${primaryEmail}?subject=${encodeURIComponent(
-    "Project Inquiry · ThinkAI Studio"
-  )}&body=${encodeURIComponent(
-    "Hi Binh Minh,\n\nI would like to discuss a project regarding...\n\n- Scope/Needs:\n- Timeline:\n- Budget range:\n\nBest regards,"
-  )}`;
+    t.mailSubject
+  )}&body=${encodeURIComponent(t.mailBody)}`;
 
   return (
     <AnimatePresence>
@@ -118,7 +116,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               <div className="flex items-center gap-2.5">
                 <span className="w-2.5 h-2.5 rounded-none bg-emerald-400 animate-pulse" />
                 <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
-                  Start a Project
+                  {t.title}
                 </h3>
               </div>
 
@@ -127,21 +125,21 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 className="group flex items-center justify-center gap-2 px-3 py-1.5 rounded-none bg-white/10 text-white text-xs font-mono font-bold hover:bg-white/20 transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
-                <ButtonTextRoll text="Close" className="font-mono text-xs font-bold leading-none" />
+                <ButtonTextRoll text={t.close} className="font-mono text-xs font-bold leading-none" />
                 <span className="text-[10px] text-neutral-400 font-mono">ESC</span>
               </button>
             </div>
 
             {/* Subtext */}
             <div className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-              Have a web platform, self-hosted infrastructure, or systems project in mind? Reach out directly via email or your preferred mail client:
+              {t.body}
             </div>
 
             {/* Email Card 1: Primary Studio Mail */}
             <div className="p-4 rounded-none bg-white/[0.04] border border-white/10 space-y-3">
               <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 uppercase tracking-wider">
-                <span>(PRIMARY CONTACT)</span>
-                <span className="text-emerald-400">4-8h Response SLA</span>
+                <span>{t.primaryLabel}</span>
+                <span className="text-emerald-400">{t.responseSla}</span>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -161,12 +159,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   {copiedEmail === primaryEmail ? (
                     <>
                       <Check className="w-3.5 h-3.5" />
-                      <span>Copied!</span>
+                      <span>{t.copiedEmail}</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span>Copy Email</span>
+                      <span>{t.copyEmail}</span>
                     </>
                   )}
                 </button>
@@ -188,7 +186,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 className="p-3 rounded-none bg-white/[0.04] flex items-center justify-center gap-2 text-xs font-mono font-bold cursor-pointer"
               >
                 <Mail className="w-4 h-4 shrink-0" />
-                <span>Open in Gmail</span>
+                <span>{t.openGmail}</span>
                 <ExternalLink className="w-3 h-3 text-neutral-400" />
               </WipeButton>
 
@@ -203,7 +201,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 className="p-3 rounded-none bg-white/[0.04] flex items-center justify-center gap-2 text-xs font-mono font-bold cursor-pointer"
               >
                 <Mail className="w-4 h-4 shrink-0" />
-                <span>Default Mail App</span>
+                <span>{t.defaultMail}</span>
                 <ExternalLink className="w-3 h-3 text-neutral-400" />
               </WipeButton>
             </div>
@@ -213,10 +211,10 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold text-white uppercase tracking-wider">
                   <FileText className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>DevOps Curriculum Vitae</span>
+                  <span>{t.cvTitle}</span>
                 </div>
                 <p className="text-[11px] font-mono text-neutral-400">
-                  Nguyen Binh Minh · 2026 Updated · B.S. Software Engineering (PDF)
+                  {t.cvSubtitle}
                 </p>
               </div>
 
@@ -234,14 +232,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 className="px-3.5 py-2 rounded-none bg-white/10 flex items-center justify-center gap-2 text-xs font-mono font-bold cursor-pointer shrink-0 select-none"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Download CV</span>
+                <span>{t.downloadCv}</span>
               </WipeButton>
             </div>
 
             {/* Social & Alternative Contact Info */}
             <div className="border-t border-white/10 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono text-neutral-400">
               <div className="flex items-center gap-2">
-                <span>Phone / Zalo:</span>
+                <span>{t.phoneLabel}</span>
                 <a
                   href={`tel:${profile.phone.replace(/\s+/g, "")}`}
                   className="text-neutral-200 hover:text-white font-bold transition-colors"

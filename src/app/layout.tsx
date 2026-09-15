@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={barlowCondensed.variable} data-theme="dark">
+    <html lang="en" className={barlowCondensed.variable} data-theme="dark" suppressHydrationWarning>
       <body>
         <div className="tai-grain-overlay" aria-hidden="true" />
         <ThemeProvider>
